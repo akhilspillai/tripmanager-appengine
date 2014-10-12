@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/EjiBSy4ig5AMg4wnIjNj8mAS-1w\"",
+ "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/wOhWSppikIMjDMTkl3YYCUnzYJY\"",
  "discoveryVersion": "v1",
  "id": "tosyncendpoint:v1",
  "name": "tosyncendpoint",
@@ -14,9 +14,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://myapp.appspot.com/_ah/api/tosyncendpoint/v1/",
+ "baseUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/tosyncendpoint/v1/",
  "basePath": "/_ah/api/tosyncendpoint/v1/",
- "rootUrl": "https://myapp.appspot.com/_ah/api/",
+ "rootUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/",
  "servicePath": "tosyncendpoint/v1/",
  "batchPath": "batch",
  "parameters": {
@@ -93,6 +93,10 @@
    "id": "ToSync",
    "type": "object",
    "properties": {
+    "changerId": {
+     "type": "string",
+     "format": "int64"
+    },
     "id": {
      "type": "string",
      "format": "int64"
@@ -165,6 +169,11 @@
     "limit": {
      "type": "integer",
      "format": "int32",
+     "location": "query"
+    },
+    "userId": {
+     "type": "string",
+     "format": "int64",
      "location": "query"
     }
    },

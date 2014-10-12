@@ -1,12 +1,12 @@
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
-  "root" : "https://myapp.appspot.com/_ah/api",
+  "root" : "https://healthy-dolphin-679.appspot.com/_ah/api",
   "name" : "expenseendpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
-    "bns" : "https://myapp.appspot.com/_ah/spi",
+    "bns" : "https://healthy-dolphin-679.appspot.com/_ah/spi",
     "deadline" : 65.0,
     "type" : "lily"
   },
@@ -155,9 +155,12 @@
             "type" : "string",
             "format" : "int64"
           },
+          "changerId" : {
+            "type" : "string",
+            "format" : "int64"
+          },
           "amount" : {
-            "type" : "number",
-            "format" : "float"
+            "type" : "string"
           },
           "currency" : {
             "type" : "string"

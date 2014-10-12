@@ -16,6 +16,7 @@ public class Trip {
 	private Long id;
 	private String name;
 	private Long admin;
+	private Long changerId;
 	private List<Long> userIDs;
 	private Date creationDate;
 	
@@ -53,6 +54,14 @@ public class Trip {
 
 	public void setAdmin(Long admin) {
 		this.admin = admin;
+	}
+
+	public Long getChangerId() {
+		return changerId;
+	}
+
+	public void setChangerId(Long changerId) {
+		this.changerId = changerId;
 	}	
 	
 }

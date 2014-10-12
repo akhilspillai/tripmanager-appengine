@@ -1,7 +1,6 @@
 package com.trip.expensemanager;
 
 import com.trip.expensemanager.EMF;
-
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -13,6 +12,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.inject.Named;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -31,15 +31,28 @@ public class ToSyncEndpoint {
 	@ApiMethod(name = "listToSync")
 	public CollectionResponse<ToSync> listToSync(
 			@Nullable @Named("cursor") String cursorString,
-			@Nullable @Named("limit") Integer limit) {
+			@Nullable @Named("limit") Integer limit,
+			@Nullable @Named("userId") Long userId,
+			@Nullable @Named("syncType") String syncType) {
 
 		EntityManager mgr = null;
 		Cursor cursor = null;
 		List<ToSync> execute = null;
-
+		Query query=null;
 		try {
 			mgr = getEntityManager();
-			Query query = mgr.createQuery("select from ToSync as ToSync");
+			if(userId!=null){
+				if(syncType!=null){
+					query = mgr.createQuery("select from ToSync as ToSync where ToSync.userId=:userId_fk and ToSync.syncType=:syncType_fk");
+					query.setParameter("userId_fk", userId);
+					query.setParameter("syncType_fk", syncType);
+				} else{
+					query = mgr.createQuery("select from ToSync as ToSync where ToSync.userId=:userId_fk");
+					query.setParameter("userId_fk", userId);
+				}
+			} else{
+				query = mgr.createQuery("select from ToSync as ToSync");
+			}
 			if (cursorString != null && cursorString != "") {
 				cursor = Cursor.fromWebSafeString(cursorString);
 				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);

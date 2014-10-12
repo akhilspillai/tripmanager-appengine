@@ -10,9 +10,19 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
+import com.google.appengine.api.urlfetch.HTTPHeader;
+import com.google.appengine.api.urlfetch.HTTPMethod;
+import com.google.appengine.api.urlfetch.HTTPRequest;
+import com.google.appengine.api.urlfetch.HTTPResponse;
+import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.appengine.datanucleus.query.JPACursorHelper;
+import com.google.appengine.labs.repackaged.org.json.JSONArray;
+import com.google.appengine.labs.repackaged.org.json.JSONException;
+import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -24,6 +34,8 @@ import javax.persistence.Query;
 
 @Api(name = "tripendpoint", namespace = @ApiNamespace(ownerDomain = "trip.com", ownerName = "trip.com", packagePath = "expensemanager"))
 public class TripEndpoint {
+	
+	  private static final String API_KEY = "AIzaSyAIG5GBeL2dYuoN5525AqOmHydvAoW7_LE";
 
 	
 
@@ -126,55 +138,78 @@ public class TripEndpoint {
 			if (!containsTrip(trip)) {
 				throw new EntityNotFoundException("Object does not exist");
 			}
-			Trip tempTrip=mgr.find(Trip.class, trip.getId());
-			tempTrip.setUserIDs(trip.getUserIDs());
-			mgr.persist(tempTrip);
+			TripEndpoint tripEndpoint=new TripEndpoint();
+			Trip tripTemp=tripEndpoint.getTrip(trip.getId());
+//			mgr.persist(tempTrip);
+			mgr.persist(trip);
 //			Sender sender = new Sender(MessageEndpoint.API_KEY);
-//			List<Long> userIds = tempTrip.getUserIDs();
-//			LogIn login=null;
-//			LogInEndpoint endpoint = new LogInEndpoint();
-//			long userIdTemp=userIds.get(userIds.size()-1);
-//			login=endpoint.getLogIn(userIdTemp);
-//			long lngTripId=tempTrip.getId();
-//			for (Long userId:userIds) {
-////				login= mgr.find(LogIn.class, userId);
-//				if(userId!=userIdTemp){
-//					login=endpoint.getLogIn(userId);
-//					doSendViaGcm(lngTripId+",UA,"+userIdTemp, sender, login);
+			List<Long> userIdsTemp=tripTemp.getUserIDs();
+			List<Long> userIds = trip.getUserIDs();
+			LogIn login;
+			LogInEndpoint endpoint=new LogInEndpoint();
+			JSONArray jsonArr=new JSONArray();
+			for (Long userId:userIds) {
+//				if(userId!=trip.getAdmin()){
+					login=endpoint.getLogIn(userId);
+					if(userIdsTemp.containsAll(userIds)){
+						addToToSync("TU", trip.getId(), login.getId(), trip.getChangerId());
+					} else{
+						addToToSync("UA", trip.getId(), login.getId(), trip.getChangerId());
+					}
+					jsonArr.put(login.getRegId());
 //				}
-//			}
+			}
+			doSendViaGcm(jsonArr);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
 		} finally {
 			mgr.close();
 		}
 		return trip;
 	}
 	
-	private static Result doSendViaGcm(String message, Sender sender, LogIn login) throws IOException {
-		// Trim message if needed.
-		if (message.length() > 1000) {
-			message = message.substring(0, 1000) + "[...]";
-		}
-
-		// This message object is a Google Cloud Messaging object, it is NOT 
-		// related to the MessageData class
-		Message msg = new Message.Builder().addData("message", message).build();
-		Result result = sender.send(msg, login.getRegId(),5);
-		LogInEndpoint endpoint = new LogInEndpoint();
-		if (result.getMessageId() != null) {
-			String canonicalRegId = result.getCanonicalRegistrationId();
-			if (canonicalRegId != null) {
-				endpoint.removeLogIn(login.getId());
-				login.setRegId(canonicalRegId);
-				endpoint.insertLogIn(login);
+	private void addToToSync(String message, Long lngId, Long userId, Long changerId) throws IOException {
+		ToSync toSync=new ToSync();
+		toSync.setSyncItem(lngId);
+		toSync.setSyncType(message);
+		toSync.setUserId(userId);
+		toSync.setChangerId(changerId);
+		ToSyncEndpoint toSyncEndpoint=new ToSyncEndpoint();
+		/*CollectionResponse<ToSync> toSyncResult = toSyncEndpoint.listToSync(null, null, userId, message);
+		if(toSyncResult == null || toSyncResult.getItems() == null || toSyncResult.getItems().size() < 1){*/
+			toSyncEndpoint.insertToSync(toSync);
+		/*} else{
+			Collection<ToSync> toSyncArr = toSyncResult.getItems();
+			long tripIdTemp=0L;
+			for(ToSync toSyncTemp:toSyncArr){
+				tripIdTemp=toSyncTemp.getSyncItemId();
+				if(tripIdTemp==lngId){
+					break;
+				} else{
+					toSyncEndpoint.insertToSync(toSync);
+					break;
+				}
 			}
-		} else {
-			String error = result.getErrorCodeName();
-			if (error.equals(Constants.ERROR_NOT_REGISTERED)) {
-				endpoint.removeLogIn(login.getId());
-			}
-		}
+		}*/
+	}
 
-		return result;
+	private void doSendViaGcm(JSONArray jsonArr) throws IOException, JSONException {
+		String json ="{}";
+		JSONObject jsonObj=new JSONObject();
+		jsonObj.put("registration_ids", jsonArr);
+		
+		json=jsonObj.toString();
+		System.out.println("request "+json);
+		
+		URL url = new URL("https://android.googleapis.com/gcm/send");
+		HTTPRequest request = new HTTPRequest(url, HTTPMethod.POST);
+		request.addHeader(new HTTPHeader("Content-Type","application/json")); 
+		request.addHeader(new HTTPHeader("Authorization", "key="+API_KEY));
+		request.setPayload(json.getBytes("UTF-8"));
+		HTTPResponse response = URLFetchServiceFactory.getURLFetchService().fetch(request);
+		System.out.println("Content "+new String(response.getContent()));
 	}
 
 	/**

@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/EjiBSy4ig5AMg4wnIjNj8mAS-1w\"",
+ "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/wOhWSppikIMjDMTkl3YYCUnzYJY\"",
  "discoveryVersion": "v1",
  "id": "tosyncendpoint:v1",
  "name": "tosyncendpoint",
@@ -14,8 +14,8 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rpc",
- "rootUrl": "https://myapp.appspot.com/_ah/api/",
- "rpcUrl": "https://myapp.appspot.com/_ah/api/rpc",
+ "rootUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/",
+ "rpcUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/rpc",
  "rpcPath": "/_ah/api/rpc",
  "parameters": {
   "alt": {
@@ -91,6 +91,10 @@
    "id": "ToSync",
    "type": "object",
    "properties": {
+    "changerId": {
+     "type": "string",
+     "format": "int64"
+    },
     "id": {
      "type": "string",
      "format": "int64"
@@ -161,6 +165,10 @@
     "limit": {
      "type": "integer",
      "format": "int32"
+    },
+    "userId": {
+     "type": "string",
+     "format": "int64"
     }
    },
    "returns": {

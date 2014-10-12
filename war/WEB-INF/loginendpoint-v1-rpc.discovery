@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/trMp4CIUYVyn1wAapxi9mMx378Y\"",
+ "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/g5N-mCeVi-n7wv1onAV-y1Uy5Vs\"",
  "discoveryVersion": "v1",
  "id": "loginendpoint:v1",
  "name": "loginendpoint",
@@ -14,8 +14,8 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rpc",
- "rootUrl": "https://myapp.appspot.com/_ah/api/",
- "rpcUrl": "https://myapp.appspot.com/_ah/api/rpc",
+ "rootUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/",
+ "rpcUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/rpc",
  "rpcPath": "/_ah/api/rpc",
  "parameters": {
   "alt": {

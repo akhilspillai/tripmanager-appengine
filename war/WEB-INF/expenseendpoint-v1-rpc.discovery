@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/uep1IkrCxld8VS7h1qSQYcZq50Y\"",
+ "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/lbF-Q31stbOfwIgxi_wnWa1OBSE\"",
  "discoveryVersion": "v1",
  "id": "expenseendpoint:v1",
  "name": "expenseendpoint",
@@ -14,8 +14,8 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rpc",
- "rootUrl": "https://myapp.appspot.com/_ah/api/",
- "rpcUrl": "https://myapp.appspot.com/_ah/api/rpc",
+ "rootUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/",
+ "rpcUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/rpc",
  "rpcPath": "/_ah/api/rpc",
  "parameters": {
   "alt": {
@@ -92,8 +92,11 @@
    "type": "object",
    "properties": {
     "amount": {
-     "type": "number",
-     "format": "float"
+     "type": "string"
+    },
+    "changerId": {
+     "type": "string",
+     "format": "int64"
     },
     "creationDate": {
      "type": "string",

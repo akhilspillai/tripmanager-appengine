@@ -1,6 +1,7 @@
 package com.trip.expensemanager;
 
 import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +17,8 @@ public class Expense {
 	private String description;
 	private Long userId;
 	private Long tripId;
-	private Float amount;
+	private Long changerId;
+	private String amount;
 	private String currency;
 	private Date creationDate;
 	
@@ -56,11 +58,11 @@ public class Expense {
 		this.userId = userId;
 	}
 
-	public Float getAmount() {
+	public String getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Float amount) {
+	public void setAmount(String amount) {
 		this.amount = amount;
 	}
 
@@ -78,6 +80,14 @@ public class Expense {
 
 	public void setTripId(Long tripId) {
 		this.tripId = tripId;
+	}
+
+	public Long getChangerId() {
+		return changerId;
+	}
+
+	public void setChangerId(Long changerId) {
+		this.changerId = changerId;
 	}	
 	
 }

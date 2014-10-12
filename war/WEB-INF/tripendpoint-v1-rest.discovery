@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/Iubb79t4kPHEiR5Z9JB5OAbndlw\"",
+ "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/TfVeEHzDgCOt3Wet_D10JysmEiE\"",
  "discoveryVersion": "v1",
  "id": "tripendpoint:v1",
  "name": "tripendpoint",
@@ -14,9 +14,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://myapp.appspot.com/_ah/api/tripendpoint/v1/",
+ "baseUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/tripendpoint/v1/",
  "basePath": "/_ah/api/tripendpoint/v1/",
- "rootUrl": "https://myapp.appspot.com/_ah/api/",
+ "rootUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/",
  "servicePath": "tripendpoint/v1/",
  "batchPath": "batch",
  "parameters": {
@@ -94,6 +94,10 @@
    "type": "object",
    "properties": {
     "admin": {
+     "type": "string",
+     "format": "int64"
+    },
+    "changerId": {
      "type": "string",
      "format": "int64"
     },

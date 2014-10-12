@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/fNySt1dPA1xloup7ZvjdHe127-k\"",
+ "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/iMBU-EjuaVwezdK2tFHwcAXwT4s\"",
  "discoveryVersion": "v1",
  "id": "messageEndpoint:v1",
  "name": "messageEndpoint",
@@ -14,8 +14,8 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rpc",
- "rootUrl": "https://myapp.appspot.com/_ah/api/",
- "rpcUrl": "https://myapp.appspot.com/_ah/api/rpc",
+ "rootUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/",
+ "rpcUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/rpc",
  "rpcPath": "/_ah/api/rpc",
  "parameters": {
   "alt": {

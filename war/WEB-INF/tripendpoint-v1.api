@@ -1,12 +1,12 @@
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
-  "root" : "https://myapp.appspot.com/_ah/api",
+  "root" : "https://healthy-dolphin-679.appspot.com/_ah/api",
   "name" : "tripendpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
-    "bns" : "https://myapp.appspot.com/_ah/spi",
+    "bns" : "https://healthy-dolphin-679.appspot.com/_ah/spi",
     "deadline" : 65.0,
     "type" : "lily"
   },
@@ -89,6 +89,22 @@
         "body" : "empty"
       }
     },
+    "tripendpoint.insertTrip" : {
+      "path" : "trip",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.TripEndpoint.insertTrip",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "tripendpoint.getTrip" : {
       "path" : "trip/{id}",
       "httpMethod" : "GET",
@@ -109,22 +125,6 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
-    },
-    "tripendpoint.insertTrip" : {
-      "path" : "trip",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.TripEndpoint.insertTrip",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
     }
   },
   "descriptor" : {
@@ -141,6 +141,10 @@
             "type" : "string"
           },
           "admin" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "changerId" : {
             "type" : "string",
             "format" : "int64"
           },
@@ -189,15 +193,15 @@
       },
       "com.trip.expensemanager.TripEndpoint.removeTrip" : {
       },
-      "com.trip.expensemanager.TripEndpoint.getTrip" : {
-        "response" : {
-          "$ref" : "Trip"
-        }
-      },
       "com.trip.expensemanager.TripEndpoint.insertTrip" : {
         "request" : {
           "$ref" : "Trip"
         },
+        "response" : {
+          "$ref" : "Trip"
+        }
+      },
+      "com.trip.expensemanager.TripEndpoint.getTrip" : {
         "response" : {
           "$ref" : "Trip"
         }

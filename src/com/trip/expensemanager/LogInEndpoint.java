@@ -45,6 +45,8 @@ public class LogInEndpoint {
 			if(username!=null){
 				query = mgr.createQuery("select from LogIn as LogIn where LogIn.username=:username_fk");
 				query.setParameter("username_fk", username);
+			} else{
+				query = mgr.createQuery("select from LogIn as LogIn");
 			}
 			if (cursorString != null && cursorString != "") {
 				cursor = Cursor.fromWebSafeString(cursorString);
@@ -125,10 +127,10 @@ public class LogInEndpoint {
 			if (!containsLogIn(login)) {
 				throw new EntityNotFoundException("Object does not exist");
 			}
-			LogIn tempLogin=mgr.find(LogIn.class, login.getId());
-			tempLogin.setTripIDs(login.getTripIDs());
-			tempLogin.setRegId(login.getRegId());
-			mgr.persist(tempLogin);
+//			LogIn tempLogin=mgr.find(LogIn.class, login.getId());
+//			tempLogin.setTripIDs(login.getTripIDs());
+//			tempLogin.setRegId(login.getRegId());
+			mgr.persist(login);
 		} finally {
 			mgr.close();
 		}

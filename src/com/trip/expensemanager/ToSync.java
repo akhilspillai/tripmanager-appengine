@@ -13,6 +13,7 @@ public class ToSync {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Long userId;
+	private Long changerId;
 	private Long syncItemId;
 	private String syncType;
 
@@ -42,6 +43,14 @@ public class ToSync {
 
 	public void setSyncItem(Long syncItemId) {
 		this.syncItemId = syncItemId;
+	}
+
+	public Long getChangerId() {
+		return changerId;
+	}
+
+	public void setChangerId(Long changerId) {
+		this.changerId = changerId;
 	}
 
 	
