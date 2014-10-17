@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/wOhWSppikIMjDMTkl3YYCUnzYJY\"",
+ "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/eNVWrezkHqvUfZknTJ_Ktjw05xM\"",
  "discoveryVersion": "v1",
  "id": "tosyncendpoint:v1",
  "name": "tosyncendpoint",
@@ -169,6 +169,10 @@
     "limit": {
      "type": "integer",
      "format": "int32",
+     "location": "query"
+    },
+    "syncType": {
+     "type": "string",
      "location": "query"
     },
     "userId": {

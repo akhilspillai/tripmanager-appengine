@@ -106,6 +106,14 @@
           "tripId" : {
             "type" : "int64",
             "required" : false
+          },
+          "userId" : {
+            "type" : "int64",
+            "required" : false
+          },
+          "date" : {
+            "type" : "datetime",
+            "required" : false
           }
         },
         "body" : "empty"

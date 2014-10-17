@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/lbF-Q31stbOfwIgxi_wnWa1OBSE\"",
+ "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/WUlmFspMjK0CuhOc9cqn0rav05E\"",
  "discoveryVersion": "v1",
  "id": "expenseendpoint:v1",
  "name": "expenseendpoint",
@@ -175,12 +175,22 @@
      "type": "string",
      "location": "query"
     },
+    "date": {
+     "type": "string",
+     "format": "date-time",
+     "location": "query"
+    },
     "limit": {
      "type": "integer",
      "format": "int32",
      "location": "query"
     },
     "tripId": {
+     "type": "string",
+     "format": "int64",
+     "location": "query"
+    },
+    "userId": {
      "type": "string",
      "format": "int64",
      "location": "query"

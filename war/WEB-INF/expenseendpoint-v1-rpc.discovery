@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/lbF-Q31stbOfwIgxi_wnWa1OBSE\"",
+ "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/WUlmFspMjK0CuhOc9cqn0rav05E\"",
  "discoveryVersion": "v1",
  "id": "expenseendpoint:v1",
  "name": "expenseendpoint",
@@ -171,11 +171,19 @@
     "cursor": {
      "type": "string"
     },
+    "date": {
+     "type": "string",
+     "format": "date-time"
+    },
     "limit": {
      "type": "integer",
      "format": "int32"
     },
     "tripId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "userId": {
      "type": "string",
      "format": "int64"
     }
