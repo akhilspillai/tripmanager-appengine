@@ -137,6 +137,27 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
+    },
+    "expenseendpoint.expenseEndpoint.removeTripExpense" : {
+      "path" : "tripexpense/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.removeTripExpense",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
     }
   },
   "descriptor" : {
@@ -223,6 +244,8 @@
         "response" : {
           "$ref" : "Expense"
         }
+      },
+      "com.trip.expensemanager.ExpenseEndpoint.removeTripExpense" : {
       }
     }
   }

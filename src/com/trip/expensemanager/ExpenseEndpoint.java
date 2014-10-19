@@ -267,4 +267,14 @@ public class ExpenseEndpoint {
 		return EMF.get().createEntityManager();
 	}
 
+	public void removeTripExpense(@Named("id")Long id) {
+		EntityManager mgr = getEntityManager();
+		try {
+			Expense expense = mgr.find(Expense.class, id);
+			mgr.remove(expense);
+		} finally {
+			mgr.close();
+		}
+	}
+
 }

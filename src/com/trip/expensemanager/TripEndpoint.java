@@ -18,6 +18,7 @@ import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -203,14 +204,27 @@ public class TripEndpoint {
 		EntityManager mgr = getEntityManager();
 		try {
 			Trip trip = mgr.find(Trip.class, id);
-			mgr.remove(trip);
 			List<Long> userIds = trip.getUserIDs();
 			LogIn login;
 			LogInEndpoint endpoint=new LogInEndpoint();
 			JSONArray jsonArr=new JSONArray();
+			ExpenseEndpoint expenseEndpoint=new ExpenseEndpoint();
+			CollectionResponse<Expense> result = expenseEndpoint.listExpense(null, null, id, null, null);
+			Collection<Expense> expenses=result.getItems();
+			Expense expense=null;
+			for(Expense expenseTemp:expenses){
+				expenseEndpoint.removeTripExpense(expenseTemp.getId());
+			}
+			mgr.remove(trip);
+			List<Long> tripIds=null;
 			for (Long userId:userIds) {
+				login=endpoint.getLogIn(userId);
+				tripIds=login.getTripIDs();
+				tripIds.remove(trip.getId());
+				login.setTripIDs(tripIds);
+				endpoint.updateLogIn(login);
 				if(!userId.equals(trip.getAdmin())){
-					login=endpoint.getLogIn(userId);
+					
 					addToToSync("TD", trip.getId(), login.getId(), trip.getAdmin());
 					jsonArr.put(login.getRegId());
 				}
