@@ -172,4 +172,20 @@ public class LogInEndpoint {
 		return EMF.get().createEntityManager();
 	}
 
+	public LogIn mergeLogIn(LogIn login) {
+		EntityManager mgr = getEntityManager();
+		try {
+			if (!containsLogIn(login)) {
+				throw new EntityNotFoundException("Object does not exist");
+			}
+//			LogIn tempLogin=mgr.find(LogIn.class, login.getId());
+//			tempLogin.setTripIDs(login.getTripIDs());
+//			tempLogin.setRegId(login.getRegId());
+			mgr.merge(login);
+		} finally {
+			mgr.close();
+		}
+		return login;
+	}
+
 }

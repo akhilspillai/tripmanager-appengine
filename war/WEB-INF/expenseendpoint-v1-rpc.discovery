@@ -1,0 +1,248 @@
+{
+ "kind": "discovery#rpcDescription",
+ "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/HlW3DbOWHT3eo9sKVd8J1TzDJUc\"",
+ "discoveryVersion": "v1",
+ "id": "expenseendpoint:v1",
+ "name": "expenseendpoint",
+ "version": "v1",
+ "description": "This is an API",
+ "ownerDomain": "trip.com",
+ "ownerName": "trip.com",
+ "packagePath": "expensemanager",
+ "icons": {
+  "x16": "http://www.google.com/images/icons/product/search-16.gif",
+  "x32": "http://www.google.com/images/icons/product/search-32.gif"
+ },
+ "protocol": "rpc",
+ "rootUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/",
+ "rpcUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/rpc",
+ "rpcPath": "/_ah/api/rpc",
+ "parameters": {
+  "alt": {
+   "type": "string",
+   "description": "Data format for the response.",
+   "default": "json",
+   "enum": [
+    "json"
+   ],
+   "enumDescriptions": [
+    "Responses with Content-Type of application/json"
+   ],
+   "location": "query"
+  },
+  "fields": {
+   "type": "string",
+   "description": "Selector specifying which fields to include in a partial response.",
+   "location": "query"
+  },
+  "key": {
+   "type": "string",
+   "description": "API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.",
+   "location": "query"
+  },
+  "oauth_token": {
+   "type": "string",
+   "description": "OAuth 2.0 token for the current user.",
+   "location": "query"
+  },
+  "prettyPrint": {
+   "type": "boolean",
+   "description": "Returns response with indentations and line breaks.",
+   "default": "true",
+   "location": "query"
+  },
+  "quotaUser": {
+   "type": "string",
+   "description": "Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.",
+   "location": "query"
+  },
+  "userIp": {
+   "type": "string",
+   "description": "IP address of the site where the request originates. Use this if you want to enforce per-user limits.",
+   "location": "query"
+  }
+ },
+ "auth": {
+  "oauth2": {
+   "scopes": {
+    "https://www.googleapis.com/auth/userinfo.email": {
+     "description": "View your email address"
+    }
+   }
+  }
+ },
+ "schemas": {
+  "CollectionResponse_Expense": {
+   "id": "CollectionResponse_Expense",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "Expense"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
+  "Expense": {
+   "id": "Expense",
+   "type": "object",
+   "properties": {
+    "amount": {
+     "type": "string"
+    },
+    "changerId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "creationDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "currency": {
+     "type": "string"
+    },
+    "description": {
+     "type": "string"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "name": {
+     "type": "string"
+    },
+    "tripId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "userId": {
+     "type": "string",
+     "format": "int64"
+    }
+   }
+  }
+ },
+ "methods": {
+  "expenseendpoint.expenseEndpoint.removeTripExpense": {
+   "id": "expenseendpoint.expenseEndpoint.removeTripExpense",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "expenseendpoint.getExpense": {
+   "id": "expenseendpoint.getExpense",
+   "allowGet": true,
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "Expense"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "expenseendpoint.insertExpense": {
+   "id": "expenseendpoint.insertExpense",
+   "parameters": {
+    "resource": {
+     "$ref": "Expense"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "Expense"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "expenseendpoint.listExpense": {
+   "id": "expenseendpoint.listExpense",
+   "allowGet": true,
+   "parameters": {
+    "cursor": {
+     "type": "string"
+    },
+    "date": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "limit": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "tripId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "userId": {
+     "type": "string",
+     "format": "int64"
+    }
+   },
+   "returns": {
+    "$ref": "CollectionResponse_Expense"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "expenseendpoint.removeExpense": {
+   "id": "expenseendpoint.removeExpense",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "expenseendpoint.updateExpense": {
+   "id": "expenseendpoint.updateExpense",
+   "parameters": {
+    "resource": {
+     "$ref": "Expense"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "Expense"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  }
+ }
+}

@@ -20,18 +20,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 import javax.inject.Named;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
 @Api(name = "tripendpoint", namespace = @ApiNamespace(ownerDomain = "trip.com", ownerName = "trip.com", packagePath = "expensemanager"))
 public class TripEndpoint {
 
 	private static final String API_KEY = "AIzaSyAIG5GBeL2dYuoN5525AqOmHydvAoW7_LE";
 
+	private static final Logger log = Logger.getLogger(TripEndpoint.class.getName());
 
 
 	/**
@@ -182,15 +183,14 @@ public class TripEndpoint {
 		jsonObj.put("registration_ids", jsonArr);
 
 		json=jsonObj.toString();
-		System.out.println("request "+json);
-
+		log.info("request "+json);
 		URL url = new URL("https://android.googleapis.com/gcm/send");
 		HTTPRequest request = new HTTPRequest(url, HTTPMethod.POST);
 		request.addHeader(new HTTPHeader("Content-Type","application/json")); 
 		request.addHeader(new HTTPHeader("Authorization", "key="+API_KEY));
 		request.setPayload(json.getBytes("UTF-8"));
 		HTTPResponse response = URLFetchServiceFactory.getURLFetchService().fetch(request);
-		System.out.println("Content "+new String(response.getContent()));
+		log.info("Content "+new String(response.getContent()));
 	}
 
 	/**
@@ -211,24 +211,23 @@ public class TripEndpoint {
 			ExpenseEndpoint expenseEndpoint=new ExpenseEndpoint();
 			CollectionResponse<Expense> result = expenseEndpoint.listExpense(null, null, id, null, null);
 			Collection<Expense> expenses=result.getItems();
-			Expense expense=null;
 			for(Expense expenseTemp:expenses){
 				expenseEndpoint.removeTripExpense(expenseTemp.getId());
 			}
-			mgr.remove(trip);
 			List<Long> tripIds=null;
 			for (Long userId:userIds) {
 				login=endpoint.getLogIn(userId);
 				tripIds=login.getTripIDs();
 				tripIds.remove(trip.getId());
 				login.setTripIDs(tripIds);
-				endpoint.updateLogIn(login);
+				endpoint.mergeLogIn(login);
 				if(!userId.equals(trip.getAdmin())){
 					
 					addToToSync("TD", trip.getId(), login.getId(), trip.getAdmin());
 					jsonArr.put(login.getRegId());
 				}
 			}
+			mgr.remove(trip);
 			doSendViaGcm(jsonArr);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
