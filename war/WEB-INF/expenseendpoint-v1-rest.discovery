@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/HlW3DbOWHT3eo9sKVd8J1TzDJUc\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/HlW3DbOWHT3eo9sKVd8J1TzDJUc\"",
  "discoveryVersion": "v1",
  "id": "expenseendpoint:v1",
  "name": "expenseendpoint",

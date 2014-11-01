@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/eNVWrezkHqvUfZknTJ_Ktjw05xM\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/eNVWrezkHqvUfZknTJ_Ktjw05xM\"",
  "discoveryVersion": "v1",
  "id": "tosyncendpoint:v1",
  "name": "tosyncendpoint",

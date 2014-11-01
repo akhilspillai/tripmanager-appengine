@@ -64,13 +64,13 @@ public class ExpenseEndpoint {
 		Query query=null;
 		try {
 			mgr = getEntityManager();
-			if(tripId!=null){
+			if(tripId!=null && userId==null){
 				query = mgr.createQuery("select from Expense E where E.tripId=:tripId_fk");
 				query.setParameter("tripId_fk", tripId);
-			} else if(date!=null && userId!=null){
-				query = mgr.createQuery("select from Expense E where E.userId=:userId_fk");
+			} else if(tripId!=null && userId!=null){
+				query = mgr.createQuery("select from Expense E where E.userId=:userId_fk and E.tripId=:tripId_fk");
 				query.setParameter("userId_fk", userId);
-//				query.setParameter("date_fk", date);
+				query.setParameter("tripId_fk", tripId);
 			}else{
 				query = mgr.createQuery("select from Expense as Expense");
 			}
@@ -137,7 +137,7 @@ public class ExpenseEndpoint {
 		}
 		return expense;
 	}
-	
+
 	private void addToToSync(String message, Long lngId, Long userId, Long changerId) throws IOException {
 		ToSync toSync=new ToSync();
 		toSync.setSyncItem(lngId);
@@ -183,26 +183,28 @@ public class ExpenseEndpoint {
 			mgr.persist(expense);
 			TripEndpoint tripEndpoint=new TripEndpoint();
 			Trip trip=tripEndpoint.getTrip(expense.getTripId());
-			List<Long> userIds = trip.getUserIDs();
-			LogIn login;
-			LogInEndpoint endpoint=new LogInEndpoint();
-			String msg;
-			if(expense.getChangerId()==0L){
-				msg="EA";
-			}
-			else {
-				msg="EU";
-			}
-			JSONArray jsonArr=new JSONArray();
-			for (Long userId:userIds) {
-				if(!userId.equals(expense.getUserId())){
-					login=endpoint.getLogIn(userId);
-					addToToSync(msg, expense.getId(), login.getId(), expense.getUserId());
-					jsonArr.put(login.getRegId());
+			if(trip!=null){
+				List<Long> userIds = trip.getUserIDs();
+				LogIn login;
+				LogInEndpoint endpoint=new LogInEndpoint();
+				String msg;
+				if(expense.getChangerId()==0L){
+					msg="EA";
 				}
+				else {
+					msg="EU";
+				}
+				JSONArray jsonArr=new JSONArray();
+				for (Long userId:userIds) {
+					if(!userId.equals(expense.getUserId())){
+						login=endpoint.getLogIn(userId);
+						addToToSync(msg, expense.getId(), login.getId(), expense.getUserId());
+						jsonArr.put(login.getRegId());
+					}
+				}
+				doSendViaGcm(jsonArr);
 			}
-			doSendViaGcm(jsonArr);
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -228,19 +230,21 @@ public class ExpenseEndpoint {
 			Expense expense = mgr.find(Expense.class, id);
 			TripEndpoint tripEndpoint=new TripEndpoint();
 			Trip trip=tripEndpoint.getTrip(expense.getTripId());
-			List<Long> userIds = trip.getUserIDs();
-			LogIn login;
-			LogInEndpoint endpoint=new LogInEndpoint();
-			JSONArray jsonArr=new JSONArray();
-			for (Long userId:userIds) {
-				if(!userId.equals(expense.getUserId())){
-					login=endpoint.getLogIn(userId);
-					addToToSync("ED", expense.getId(), login.getId(), expense.getUserId());
-					jsonArr.put(login.getRegId());
+			if(trip!=null){
+				List<Long> userIds = trip.getUserIDs();
+				LogIn login;
+				LogInEndpoint endpoint=new LogInEndpoint();
+				JSONArray jsonArr=new JSONArray();
+				for (Long userId:userIds) {
+					if(!userId.equals(expense.getUserId())){
+						login=endpoint.getLogIn(userId);
+						addToToSync("ED", expense.getId(), login.getId(), expense.getUserId());
+						jsonArr.put(login.getRegId());
+					}
 				}
+				mgr.remove(expense);
+				doSendViaGcm(jsonArr);
 			}
-			mgr.remove(expense);
-			doSendViaGcm(jsonArr);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {

@@ -130,6 +130,8 @@ public class TripEndpoint {
 	@ApiMethod(name = "updateTrip")
 	public Trip updateTrip(Trip trip) {
 		EntityManager mgr = getEntityManager();
+		boolean userAdded=false;
+		boolean userRemoved=false;
 		try {
 			if (!containsTrip(trip)) {
 				throw new EntityNotFoundException("Object does not exist");
@@ -141,16 +143,36 @@ public class TripEndpoint {
 			//			Sender sender = new Sender(MessageEndpoint.API_KEY);
 			List<Long> userIdsTemp=tripTemp.getUserIDs();
 			List<Long> userIds = trip.getUserIDs();
+			userAdded=userIdsTemp.size()<userIds.size();
+			userRemoved=userIdsTemp.size()>userIds.size();
 			LogIn login;
 			LogInEndpoint endpoint=new LogInEndpoint();
+			ExpenseEndpoint expenseEndpoint=new ExpenseEndpoint();
+			List<Long> lstTrips=null;
+			if(userRemoved){
+				login=endpoint.getLogIn(trip.getChangerId());
+				lstTrips=login.getTripIDs();
+				if(lstTrips!=null){
+					lstTrips.remove(trip.getChangerId());
+				}
+				login.setTripIDs(lstTrips);
+				endpoint.mergeLogIn(login);
+				CollectionResponse<Expense> expensesCollResp = expenseEndpoint.listExpense(null, null, trip.getId(), trip.getChangerId(), null);
+				Collection<Expense> expenses = expensesCollResp.getItems();
+				for(Expense expTemp:expenses){
+					expenseEndpoint.removeTripExpense(expTemp.getId());
+				}
+			}
 			JSONArray jsonArr=new JSONArray();
 			for (Long userId:userIds) {
 				if(!userId.equals(trip.getChangerId())){
 					login=endpoint.getLogIn(userId);
-					if(userIdsTemp.containsAll(userIds)){
-						addToToSync("TU", trip.getId(), login.getId(), trip.getChangerId());
-					} else{
+					if(userAdded){
 						addToToSync("UA", trip.getId(), login.getId(), trip.getChangerId());
+					} else if(userRemoved){
+						addToToSync("UD", trip.getId(), login.getId(), trip.getChangerId());
+					} else{
+						addToToSync("TU", trip.getId(), login.getId(), trip.getChangerId());
 					}
 					jsonArr.put(login.getRegId());
 				}
@@ -204,31 +226,33 @@ public class TripEndpoint {
 		EntityManager mgr = getEntityManager();
 		try {
 			Trip trip = mgr.find(Trip.class, id);
-			List<Long> userIds = trip.getUserIDs();
-			LogIn login;
-			LogInEndpoint endpoint=new LogInEndpoint();
-			JSONArray jsonArr=new JSONArray();
-			ExpenseEndpoint expenseEndpoint=new ExpenseEndpoint();
-			CollectionResponse<Expense> result = expenseEndpoint.listExpense(null, null, id, null, null);
-			Collection<Expense> expenses=result.getItems();
-			for(Expense expenseTemp:expenses){
-				expenseEndpoint.removeTripExpense(expenseTemp.getId());
-			}
-			List<Long> tripIds=null;
-			for (Long userId:userIds) {
-				login=endpoint.getLogIn(userId);
-				tripIds=login.getTripIDs();
-				tripIds.remove(trip.getId());
-				login.setTripIDs(tripIds);
-				endpoint.mergeLogIn(login);
-				if(!userId.equals(trip.getAdmin())){
-					
-					addToToSync("TD", trip.getId(), login.getId(), trip.getAdmin());
-					jsonArr.put(login.getRegId());
+			if(trip!=null){
+				List<Long> userIds = trip.getUserIDs();
+				LogIn login;
+				LogInEndpoint endpoint=new LogInEndpoint();
+				JSONArray jsonArr=new JSONArray();
+				ExpenseEndpoint expenseEndpoint=new ExpenseEndpoint();
+				CollectionResponse<Expense> result = expenseEndpoint.listExpense(null, null, id, null, null);
+				Collection<Expense> expenses=result.getItems();
+				for(Expense expenseTemp:expenses){
+					expenseEndpoint.removeTripExpense(expenseTemp.getId());
 				}
+				List<Long> tripIds=null;
+				for (Long userId:userIds) {
+					login=endpoint.getLogIn(userId);
+					tripIds=login.getTripIDs();
+					tripIds.remove(trip.getId());
+					login.setTripIDs(tripIds);
+					endpoint.mergeLogIn(login);
+					if(!userId.equals(trip.getAdmin())){
+
+						addToToSync("TD", trip.getId(), login.getId(), trip.getAdmin());
+						jsonArr.put(login.getRegId());
+					}
+				}
+				mgr.remove(trip);
+				doSendViaGcm(jsonArr);
 			}
-			mgr.remove(trip);
-			doSendViaGcm(jsonArr);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

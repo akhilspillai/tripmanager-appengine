@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"koCc_mmAOJe4d9CoedmJUnZeEcg/TfVeEHzDgCOt3Wet_D10JysmEiE\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/TfVeEHzDgCOt3Wet_D10JysmEiE\"",
  "discoveryVersion": "v1",
  "id": "tripendpoint:v1",
  "name": "tripendpoint",
