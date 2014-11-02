@@ -183,6 +183,9 @@ public class ExpenseEndpoint {
 			mgr.persist(expense);
 			TripEndpoint tripEndpoint=new TripEndpoint();
 			Trip trip=tripEndpoint.getTrip(expense.getTripId());
+			DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
+			DeviceInfo devInfo=null;
+			List<Long> deviceIds=null;
 			if(trip!=null){
 				List<Long> userIds = trip.getUserIDs();
 				LogIn login;
@@ -196,10 +199,18 @@ public class ExpenseEndpoint {
 				}
 				JSONArray jsonArr=new JSONArray();
 				for (Long userId:userIds) {
-					if(!userId.equals(expense.getUserId())){
-						login=endpoint.getLogIn(userId);
-						addToToSync(msg, expense.getId(), login.getId(), expense.getUserId());
-						jsonArr.put(login.getRegId());
+					login=endpoint.getLogIn(userId);
+					if(login!=null){
+						deviceIds=login.getDeviceIDs();
+						if(deviceIds!=null){
+							for(long deviceId:deviceIds){
+								devInfo=devInfoendpoint.getDeviceInfo(deviceId);
+								if(devInfo!=null){
+									addToToSync(msg, expense.getId(), deviceId, expense.getUserId());
+									jsonArr.put(devInfo.getGcmRegId());
+								}
+							}
+						}
 					}
 				}
 				doSendViaGcm(jsonArr);
@@ -235,11 +246,22 @@ public class ExpenseEndpoint {
 				LogIn login;
 				LogInEndpoint endpoint=new LogInEndpoint();
 				JSONArray jsonArr=new JSONArray();
+				DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
+				DeviceInfo devInfo=null;
+				List<Long> deviceIds=null;
 				for (Long userId:userIds) {
-					if(!userId.equals(expense.getUserId())){
-						login=endpoint.getLogIn(userId);
-						addToToSync("ED", expense.getId(), login.getId(), expense.getUserId());
-						jsonArr.put(login.getRegId());
+					login=endpoint.getLogIn(userId);
+					if(login!=null){
+						deviceIds=login.getDeviceIDs();
+						if(deviceIds!=null){
+							for(long deviceId:deviceIds){
+								devInfo=devInfoendpoint.getDeviceInfo(deviceId);
+								if(devInfo!=null){
+									addToToSync("ED", expense.getId(), deviceId, expense.getUserId());
+									jsonArr.put(devInfo.getGcmRegId());
+								}
+							}
+						}
 					}
 				}
 				mgr.remove(expense);

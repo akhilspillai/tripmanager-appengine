@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/zrfaNupbtl_sAmdXQFrQ2GLTa8k\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/Q0Wu0qnqui9JCYEruPSOVcoeryo\"",
  "discoveryVersion": "v1",
  "id": "deviceinfoendpoint:v1",
  "name": "deviceinfoendpoint",
@@ -93,15 +93,15 @@
    "id": "DeviceInfo",
    "type": "object",
    "properties": {
-    "deviceInformation": {
+    "gcmRegId": {
      "type": "string"
     },
-    "deviceRegistrationID": {
-     "type": "string"
-    },
-    "timestamp": {
+    "id": {
      "type": "string",
      "format": "int64"
+    },
+    "make": {
+     "type": "string"
     }
    }
   }
@@ -115,6 +115,7 @@
     "id": {
      "type": "string",
      "required": true,
+     "format": "int64",
      "location": "path"
     }
    },
@@ -152,6 +153,10 @@
      "type": "string",
      "location": "query"
     },
+    "gcmRegId": {
+     "type": "string",
+     "location": "query"
+    },
     "limit": {
      "type": "integer",
      "format": "int32",
@@ -173,6 +178,7 @@
     "id": {
      "type": "string",
      "required": true,
+     "format": "int64",
      "location": "path"
     }
    },

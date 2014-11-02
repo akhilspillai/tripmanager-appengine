@@ -163,10 +163,14 @@
           "password" : {
             "type" : "string"
           },
-          "regId" : {
-            "type" : "string"
-          },
           "tripIDs" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "format" : "int64"
+            }
+          },
+          "deviceIDs" : {
             "type" : "array",
             "items" : {
               "type" : "string",

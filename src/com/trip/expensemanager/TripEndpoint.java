@@ -112,6 +112,43 @@ public class TripEndpoint {
 	public Trip insertTrip(Trip trip) {
 		EntityManager mgr = getEntityManager();
 		try {
+			Trip retTrip = new TripEndpoint().insertNewTrip(trip);
+			LogInEndpoint endpoint=new LogInEndpoint();
+			LogIn login = endpoint.getLogIn(retTrip.getAdmin());
+			JSONArray jsonArr=new JSONArray();
+			if(login!=null){
+				List<Long> deviceIds = login.getDeviceIDs();
+				DeviceInfo devInfo=null;
+				DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
+				long changerId=retTrip.getChangerId();
+				if(deviceIds!=null && deviceIds.size()>1){
+					for(long deviceId:deviceIds){
+						if(deviceId!=changerId){
+							devInfo=devInfoendpoint.getDeviceInfo(deviceId);
+							if(devInfo!=null){
+								addToToSync("TA", retTrip.getId(), deviceId, retTrip.getChangerId());
+								jsonArr.put(devInfo.getGcmRegId());
+							}
+						}
+					}
+				}
+			}
+			if(jsonArr.length()!=0){
+				doSendViaGcm(jsonArr);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} finally {
+			mgr.close();
+		}
+		return trip;
+	}
+	
+	private Trip insertNewTrip(Trip trip) {
+		EntityManager mgr = getEntityManager();
+		try {
 			mgr.persist(trip);
 		} finally {
 			mgr.close();
@@ -163,18 +200,29 @@ public class TripEndpoint {
 					expenseEndpoint.removeTripExpense(expTemp.getId());
 				}
 			}
+			DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
+			DeviceInfo devInfo=null;
+			List<Long> deviceIds=null;
 			JSONArray jsonArr=new JSONArray();
 			for (Long userId:userIds) {
-				if(!userId.equals(trip.getChangerId())){
-					login=endpoint.getLogIn(userId);
-					if(userAdded){
-						addToToSync("UA", trip.getId(), login.getId(), trip.getChangerId());
-					} else if(userRemoved){
-						addToToSync("UD", trip.getId(), login.getId(), trip.getChangerId());
-					} else{
-						addToToSync("TU", trip.getId(), login.getId(), trip.getChangerId());
+				login=endpoint.getLogIn(userId);
+				if(login!=null){
+					deviceIds=login.getDeviceIDs();
+					if(deviceIds!=null){
+						for(long deviceId:deviceIds){
+							devInfo=devInfoendpoint.getDeviceInfo(deviceId);
+							if(devInfo!=null){
+								if(userAdded){
+									addToToSync("UA", trip.getId(), deviceId, trip.getChangerId());
+								} else if(userRemoved){
+									addToToSync("UD", trip.getId(), deviceId, trip.getChangerId());
+								} else{
+									addToToSync("TU", trip.getId(), deviceId, trip.getChangerId());
+								}
+								jsonArr.put(devInfo.getGcmRegId());
+							}
+						}
 					}
-					jsonArr.put(login.getRegId());
 				}
 			}
 			doSendViaGcm(jsonArr);
@@ -237,17 +285,22 @@ public class TripEndpoint {
 				for(Expense expenseTemp:expenses){
 					expenseEndpoint.removeTripExpense(expenseTemp.getId());
 				}
-				List<Long> tripIds=null;
+				DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
+				DeviceInfo devInfo=null;
+				List<Long> deviceIds=null;
 				for (Long userId:userIds) {
 					login=endpoint.getLogIn(userId);
-					tripIds=login.getTripIDs();
-					tripIds.remove(trip.getId());
-					login.setTripIDs(tripIds);
-					endpoint.mergeLogIn(login);
-					if(!userId.equals(trip.getAdmin())){
-
-						addToToSync("TD", trip.getId(), login.getId(), trip.getAdmin());
-						jsonArr.put(login.getRegId());
+					if(login!=null){
+						deviceIds=login.getDeviceIDs();
+						if(deviceIds!=null){
+							for(long deviceId:deviceIds){
+								devInfo=devInfoendpoint.getDeviceInfo(deviceId);
+								if(devInfo!=null){
+									addToToSync("TD", trip.getId(), deviceId, trip.getAdmin());
+									jsonArr.put(devInfo.getGcmRegId());
+								}
+							}
+						}
 					}
 				}
 				mgr.remove(trip);

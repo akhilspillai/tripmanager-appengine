@@ -1,7 +1,6 @@
 package com.trip.expensemanager;
 
 import com.trip.expensemanager.EMF;
-
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -13,7 +12,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.inject.Named;
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -32,16 +30,21 @@ public class DeviceInfoEndpoint {
 	@ApiMethod(name = "listDeviceInfo")
 	public CollectionResponse<DeviceInfo> listDeviceInfo(
 			@Nullable @Named("cursor") String cursorString,
-			@Nullable @Named("limit") Integer limit) {
+			@Nullable @Named("limit") Integer limit,
+			@Nullable @Named("gcmRegId") String gcmRegId) {
 
 		EntityManager mgr = null;
 		Cursor cursor = null;
 		List<DeviceInfo> execute = null;
-
+		Query query=null;
 		try {
 			mgr = getEntityManager();
-			Query query = mgr
-					.createQuery("select from DeviceInfo as DeviceInfo");
+			if(gcmRegId!=null){
+				query = mgr.createQuery("select from DeviceInfo as DeviceInfo where DeviceInfo.gcmRegId=:gcmRegId_fk");
+				query.setParameter("gcmRegId_fk", gcmRegId);
+			} else{
+				query = mgr.createQuery("select from DeviceInfo as DeviceInfo");
+			}
 			if (cursorString != null && cursorString != "") {
 				cursor = Cursor.fromWebSafeString(cursorString);
 				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
@@ -76,7 +79,7 @@ public class DeviceInfoEndpoint {
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getDeviceInfo")
-	public DeviceInfo getDeviceInfo(@Named("id") String id) {
+	public DeviceInfo getDeviceInfo(@Named("id") Long id) {
 		EntityManager mgr = getEntityManager();
 		DeviceInfo deviceinfo = null;
 		try {
@@ -99,9 +102,6 @@ public class DeviceInfoEndpoint {
 	public DeviceInfo insertDeviceInfo(DeviceInfo deviceinfo) {
 		EntityManager mgr = getEntityManager();
 		try {
-			if (containsDeviceInfo(deviceinfo)) {
-				throw new EntityExistsException("Object already exists");
-			}
 			mgr.persist(deviceinfo);
 		} finally {
 			mgr.close();
@@ -138,7 +138,7 @@ public class DeviceInfoEndpoint {
 	 * @param id the primary key of the entity to be deleted.
 	 */
 	@ApiMethod(name = "removeDeviceInfo")
-	public void removeDeviceInfo(@Named("id") String id) {
+	public void removeDeviceInfo(@Named("id") Long id) {
 		EntityManager mgr = getEntityManager();
 		try {
 			DeviceInfo deviceinfo = mgr.find(DeviceInfo.class, id);
@@ -152,8 +152,7 @@ public class DeviceInfoEndpoint {
 		EntityManager mgr = getEntityManager();
 		boolean contains = true;
 		try {
-			DeviceInfo item = mgr.find(DeviceInfo.class,
-					deviceinfo.getDeviceRegistrationID());
+			DeviceInfo item = mgr.find(DeviceInfo.class, deviceinfo.getId());
 			if (item == null) {
 				contains = false;
 			}

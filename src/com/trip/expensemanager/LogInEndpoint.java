@@ -1,7 +1,6 @@
 package com.trip.expensemanager;
 
 import com.trip.expensemanager.EMF;
-
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -9,6 +8,8 @@ import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.datanucleus.query.JPACursorHelper;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -112,6 +113,54 @@ public class LogInEndpoint {
 		return login;
 	}
 
+//	@ApiMethod(name = "createAccount")
+//	public LogIn createAccount(@Named("regId") String regId, @Named("make") String make, @Named("username") String username, @Named("password") String password, @Named("userId") Long userId) {
+//		EntityManager mgr = getEntityManager();
+//		List<Long> deviceIds=null;
+//		DeviceInfoEndpoint devInfoEndpoint=new DeviceInfoEndpoint();
+//		DeviceInfo devInfo=null;
+//		LogIn login=null;
+//		try {
+//			if(userId==0L){
+//				login=new LogIn();
+//				devInfo=new DeviceInfo();
+//				devInfo.setGcmRegId(regId);
+//				devInfo.setMake(make);
+//				devInfo.setUserId(userId);
+//				devInfo=devInfoEndpoint.insertDeviceInfo(devInfo);
+//				deviceIds=new ArrayList<Long>();
+//				deviceIds.add(devInfo.getId());
+//				login.setPassword(password);
+//				login.setUsername(username);
+//				login.setDeviceIDs(deviceIds);
+//			} else{
+//				login=getLogIn(userId);
+//				CollectionResponse<DeviceInfo> infoCollResp = devInfoEndpoint.listDeviceInfo(null, null, login.getId());
+//				Collection<DeviceInfo> devInfos = infoCollResp.getItems();
+//				for(DeviceInfo devInfoTemp:devInfos){
+//					if(devInfoTemp.getGcmRegId().equals(regId)){
+//						devInfo=devInfoTemp;
+//						break;
+//					}
+//				}
+//				if(devInfo==null){
+//					devInfo=new DeviceInfo();
+//					devInfo.setGcmRegId(regId);
+//					devInfo.setMake(make);
+//					devInfo.setUserId(userId);
+//					devInfo=devInfoEndpoint.insertDeviceInfo(devInfo);
+//					deviceIds=login.getDeviceIDs();
+//					deviceIds.add(devInfo.getId());
+//					login.setDeviceIDs(deviceIds);
+//				}
+//			}
+//			mgr.persist(login);
+//		} finally {
+//			mgr.close();
+//		}
+//		return login;
+//	}
+	
 	/**
 	 * This method is used for updating an existing entity. If the entity does not
 	 * exist in the datastore, an exception is thrown.

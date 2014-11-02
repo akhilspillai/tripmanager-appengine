@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/TrzH23Nx3nK93XgtXWlml5qjun0\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/cyPme5uJtAdnBXfOahyZvDpr1EQ\"",
  "discoveryVersion": "v1",
  "id": "loginendpoint:v1",
  "name": "loginendpoint",
@@ -93,14 +93,18 @@
    "id": "LogIn",
    "type": "object",
    "properties": {
+    "deviceIDs": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "format": "int64"
+     }
+    },
     "id": {
      "type": "string",
      "format": "int64"
     },
     "password": {
-     "type": "string"
-    },
-    "regId": {
      "type": "string"
     },
     "tripIDs": {

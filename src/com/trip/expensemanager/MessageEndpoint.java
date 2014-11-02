@@ -140,7 +140,7 @@ public class MessageEndpoint {
     }
     // ping a max of 10 registered devices
     CollectionResponse<DeviceInfo> response = endpoint.listDeviceInfo(null,
-        10);
+        10, null);
     for (DeviceInfo deviceInfo : response.getItems()) {
       doSendViaGcm(message, sender, deviceInfo);
     }
@@ -167,19 +167,19 @@ public class MessageEndpoint {
     // This message object is a Google Cloud Messaging object, it is NOT 
     // related to the MessageData class
     Message msg = new Message.Builder().addData("message", message).build();
-    Result result = sender.send(msg, deviceInfo.getDeviceRegistrationID(),
+    Result result = sender.send(msg, deviceInfo.getGcmRegId(),
         5);
     if (result.getMessageId() != null) {
       String canonicalRegId = result.getCanonicalRegistrationId();
       if (canonicalRegId != null) {
-        endpoint.removeDeviceInfo(deviceInfo.getDeviceRegistrationID());
-        deviceInfo.setDeviceRegistrationID(canonicalRegId);
+        endpoint.removeDeviceInfo(deviceInfo.getId());
+        deviceInfo.setGcmRegId(canonicalRegId);
         endpoint.insertDeviceInfo(deviceInfo);
       }
     } else {
       String error = result.getErrorCodeName();
       if (error.equals(Constants.ERROR_NOT_REGISTERED)) {
-        endpoint.removeDeviceInfo(deviceInfo.getDeviceRegistrationID());
+        endpoint.removeDeviceInfo(deviceInfo.getId());
       }
     }
 

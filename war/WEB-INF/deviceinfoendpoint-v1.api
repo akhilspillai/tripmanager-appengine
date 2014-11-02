@@ -54,7 +54,7 @@
       "request" : {
         "parameters" : {
           "id" : {
-            "type" : "string",
+            "type" : "int64",
             "required" : true
           }
         },
@@ -75,7 +75,7 @@
       "request" : {
         "parameters" : {
           "id" : {
-            "type" : "string",
+            "type" : "int64",
             "required" : true
           }
         },
@@ -101,6 +101,10 @@
           },
           "limit" : {
             "type" : "int32",
+            "required" : false
+          },
+          "gcmRegId" : {
+            "type" : "string",
             "required" : false
           }
         },
@@ -133,15 +137,15 @@
         "id" : "DeviceInfo",
         "type" : "object",
         "properties" : {
-          "deviceRegistrationID" : {
-            "type" : "string"
-          },
-          "deviceInformation" : {
-            "type" : "string"
-          },
-          "timestamp" : {
+          "id" : {
             "type" : "string",
             "format" : "int64"
+          },
+          "make" : {
+            "type" : "string"
+          },
+          "gcmRegId" : {
+            "type" : "string"
           }
         }
       },

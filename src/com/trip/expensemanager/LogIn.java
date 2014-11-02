@@ -15,8 +15,8 @@ public class LogIn {
 	private Long id;
 	private String username;
 	private String password;
-	private String regId;
 	private List<Long> tripIDs;
+	private List<Long> deviceIDs;
 
 	public Long getId() {
 		return id;
@@ -28,14 +28,6 @@ public class LogIn {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getRegId() {
-		return regId;
-	}
-
-	public void setRegId(String regId) {
-		this.regId = regId;
 	}
 
 	public String getUsername() {
@@ -52,6 +44,14 @@ public class LogIn {
 
 	public void setTripIDs(List<Long> tripIDs) {
 		this.tripIDs = tripIDs;
+	}
+
+	public List<Long> getDeviceIDs() {
+		return deviceIDs;
+	}
+
+	public void setDeviceIDs(List<Long> deviceIDs) {
+		this.deviceIDs = deviceIDs;
 	}
 	
 	
