@@ -80,6 +80,27 @@
         "body" : "empty"
       }
     },
+    "loginendpoint.getLogIn" : {
+      "path" : "login/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.getLogIn",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "loginendpoint.listLogIn" : {
       "path" : "login",
       "httpMethod" : "GET",
@@ -101,27 +122,6 @@
           "username" : {
             "type" : "string",
             "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "loginendpoint.getLogIn" : {
-      "path" : "login/{id}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.getLogIn",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
           }
         },
         "body" : "empty"
@@ -214,14 +214,14 @@
       },
       "com.trip.expensemanager.LogInEndpoint.removeLogIn" : {
       },
-      "com.trip.expensemanager.LogInEndpoint.listLogIn" : {
-        "response" : {
-          "$ref" : "CollectionResponse_LogIn"
-        }
-      },
       "com.trip.expensemanager.LogInEndpoint.getLogIn" : {
         "response" : {
           "$ref" : "LogIn"
+        }
+      },
+      "com.trip.expensemanager.LogInEndpoint.listLogIn" : {
+        "response" : {
+          "$ref" : "CollectionResponse_LogIn"
         }
       },
       "com.trip.expensemanager.LogInEndpoint.updateLogIn" : {
