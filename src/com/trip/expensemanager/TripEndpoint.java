@@ -276,6 +276,7 @@ public class TripEndpoint {
 			Trip trip = mgr.find(Trip.class, id);
 			if(trip!=null){
 				List<Long> userIds = trip.getUserIDs();
+				List<Long> tripIds=null;
 				LogIn login;
 				LogInEndpoint endpoint=new LogInEndpoint();
 				JSONArray jsonArr=new JSONArray();
@@ -292,6 +293,12 @@ public class TripEndpoint {
 					login=endpoint.getLogIn(userId);
 					if(login!=null){
 						deviceIds=login.getDeviceIDs();
+						tripIds=login.getTripIDs();
+						if(tripIds.contains(trip.getId())){
+							tripIds.remove(trip.getId());
+						}
+						login.setTripIDs(tripIds);
+						endpoint.mergeLogIn(login);
 						if(deviceIds!=null){
 							for(long deviceId:deviceIds){
 								devInfo=devInfoendpoint.getDeviceInfo(deviceId);
