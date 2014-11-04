@@ -197,6 +197,13 @@
           "creationDate" : {
             "type" : "string",
             "format" : "date-time"
+          },
+          "expenseUserIds" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "format" : "int64"
+            }
           }
         }
       },

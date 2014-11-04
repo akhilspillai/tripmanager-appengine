@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/cyPme5uJtAdnBXfOahyZvDpr1EQ\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/Ww8JEg7PPyA25jWpIQmIVcclw4U\"",
  "discoveryVersion": "v1",
  "id": "loginendpoint:v1",
  "name": "loginendpoint",
@@ -103,6 +103,9 @@
      "format": "int64"
     },
     "password": {
+     "type": "string"
+    },
+    "prefferedName": {
      "type": "string"
     },
     "tripIDs": {

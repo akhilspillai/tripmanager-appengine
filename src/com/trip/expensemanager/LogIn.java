@@ -17,6 +17,7 @@ public class LogIn {
 	private String password;
 	private List<Long> tripIDs;
 	private List<Long> deviceIDs;
+	private String prefferedName;
 
 	public Long getId() {
 		return id;
@@ -52,6 +53,14 @@ public class LogIn {
 
 	public void setDeviceIDs(List<Long> deviceIDs) {
 		this.deviceIDs = deviceIDs;
+	}
+
+	public String getPrefferedName() {
+		return prefferedName;
+	}
+
+	public void setPrefferedName(String prefferedName) {
+		this.prefferedName = prefferedName;
 	}
 	
 	

@@ -176,6 +176,9 @@
               "type" : "string",
               "format" : "int64"
             }
+          },
+          "prefferedName" : {
+            "type" : "string"
           }
         }
       },

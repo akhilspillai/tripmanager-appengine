@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/HlW3DbOWHT3eo9sKVd8J1TzDJUc\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/25ut731c9Q2KIW-R2ia21RwoyCM\"",
  "discoveryVersion": "v1",
  "id": "expenseendpoint:v1",
  "name": "expenseendpoint",
@@ -109,6 +109,13 @@
     },
     "description": {
      "type": "string"
+    },
+    "expenseUserIds": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "format": "int64"
+     }
     },
     "id": {
      "type": "string",

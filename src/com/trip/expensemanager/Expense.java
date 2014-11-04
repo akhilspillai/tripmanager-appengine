@@ -21,6 +21,7 @@ public class Expense {
 	private String amount;
 	private String currency;
 	private Date creationDate;
+	private Long[] expenseUserIds;
 	
 	public Long getId(){
 		return this.id;
@@ -88,6 +89,14 @@ public class Expense {
 
 	public void setChangerId(Long changerId) {
 		this.changerId = changerId;
+	}
+
+	public Long[] getExpenseUserIds() {
+		return expenseUserIds;
+	}
+
+	public void setExpenseUserIds(Long[] expenseUserIds) {
+		this.expenseUserIds = expenseUserIds;
 	}	
 	
 }
