@@ -1,9 +1,9 @@
 {
- "kind": "discovery#restDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/T68x6KlNTwBQrWfDFgJIuSfzy1I\"",
+ "kind": "discovery#rpcDescription",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/LFOXXiZ61VuLVSbyZYnYAYfuqZI\"",
  "discoveryVersion": "v1",
- "id": "expenseendpoint:v1",
- "name": "expenseendpoint",
+ "id": "distributionendpoint:v1",
+ "name": "distributionendpoint",
  "version": "v1",
  "description": "This is an API",
  "ownerDomain": "trip.com",
@@ -13,12 +13,10 @@
   "x16": "http://www.google.com/images/icons/product/search-16.gif",
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
- "protocol": "rest",
- "baseUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/expenseendpoint/v1/",
- "basePath": "/_ah/api/expenseendpoint/v1/",
+ "protocol": "rpc",
  "rootUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/",
- "servicePath": "expenseendpoint/v1/",
- "batchPath": "batch",
+ "rpcUrl": "https://healthy-dolphin-679.appspot.com/_ah/api/rpc",
+ "rpcPath": "/_ah/api/rpc",
  "parameters": {
   "alt": {
    "type": "string",
@@ -74,14 +72,14 @@
   }
  },
  "schemas": {
-  "CollectionResponse_Expense": {
-   "id": "CollectionResponse_Expense",
+  "CollectionResponse_Distribution": {
+   "id": "CollectionResponse_Distribution",
    "type": "object",
    "properties": {
     "items": {
      "type": "array",
      "items": {
-      "$ref": "Expense"
+      "$ref": "Distribution"
      }
     },
     "nextPageToken": {
@@ -89,53 +87,29 @@
     }
    }
   },
-  "Expense": {
-   "id": "Expense",
+  "Distribution": {
+   "id": "Distribution",
    "type": "object",
    "properties": {
     "amount": {
      "type": "string"
     },
-    "changerId": {
+    "fromId": {
      "type": "string",
      "format": "int64"
-    },
-    "creationDate": {
-     "type": "string",
-     "format": "date-time"
-    },
-    "currency": {
-     "type": "string"
-    },
-    "description": {
-     "type": "string"
-    },
-    "expenseAmounts": {
-     "type": "array",
-     "items": {
-      "type": "number",
-      "format": "float"
-     }
-    },
-    "expenseUserIds": {
-     "type": "array",
-     "items": {
-      "type": "string",
-      "format": "int64"
-     }
     },
     "id": {
      "type": "string",
      "format": "int64"
     },
-    "name": {
+    "paid": {
      "type": "string"
     },
-    "tripId": {
+    "toId": {
      "type": "string",
      "format": "int64"
     },
-    "userId": {
+    "tripId": {
      "type": "string",
      "format": "int64"
     }
@@ -143,90 +117,69 @@
   }
  },
  "methods": {
-  "getExpense": {
-   "id": "expenseendpoint.getExpense",
-   "path": "expense/{id}",
-   "httpMethod": "GET",
+  "distributionendpoint.getDistribution": {
+   "id": "distributionendpoint.getDistribution",
+   "allowGet": true,
    "parameters": {
     "id": {
      "type": "string",
      "required": true,
-     "format": "int64",
-     "location": "path"
+     "format": "int64"
     }
    },
    "parameterOrder": [
     "id"
    ],
-   "response": {
-    "$ref": "Expense"
+   "returns": {
+    "$ref": "Distribution"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "insertExpense": {
-   "id": "expenseendpoint.insertExpense",
-   "path": "expense",
-   "httpMethod": "POST",
-   "request": {
-    "$ref": "Expense",
-    "parameterName": "resource"
+  "distributionendpoint.insertDistribution": {
+   "id": "distributionendpoint.insertDistribution",
+   "parameters": {
+    "resource": {
+     "$ref": "Distribution"
+    }
    },
-   "response": {
-    "$ref": "Expense"
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "Distribution"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "listExpense": {
-   "id": "expenseendpoint.listExpense",
-   "path": "expense",
-   "httpMethod": "GET",
+  "distributionendpoint.listDistribution": {
+   "id": "distributionendpoint.listDistribution",
+   "allowGet": true,
    "parameters": {
     "cursor": {
-     "type": "string",
-     "location": "query"
-    },
-    "date": {
-     "type": "string",
-     "format": "date-time",
-     "location": "query"
+     "type": "string"
     },
     "limit": {
      "type": "integer",
-     "format": "int32",
-     "location": "query"
-    },
-    "tripId": {
-     "type": "string",
-     "format": "int64",
-     "location": "query"
-    },
-    "userId": {
-     "type": "string",
-     "format": "int64",
-     "location": "query"
+     "format": "int32"
     }
    },
-   "response": {
-    "$ref": "CollectionResponse_Expense"
+   "returns": {
+    "$ref": "CollectionResponse_Distribution"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "removeExpense": {
-   "id": "expenseendpoint.removeExpense",
-   "path": "expense/{id}",
-   "httpMethod": "DELETE",
+  "distributionendpoint.removeDistribution": {
+   "id": "distributionendpoint.removeDistribution",
    "parameters": {
     "id": {
      "type": "string",
      "required": true,
-     "format": "int64",
-     "location": "path"
+     "format": "int64"
     }
    },
    "parameterOrder": [
@@ -236,45 +189,22 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "updateExpense": {
-   "id": "expenseendpoint.updateExpense",
-   "path": "expense",
-   "httpMethod": "PUT",
-   "request": {
-    "$ref": "Expense",
-    "parameterName": "resource"
+  "distributionendpoint.updateDistribution": {
+   "id": "distributionendpoint.updateDistribution",
+   "parameters": {
+    "resource": {
+     "$ref": "Distribution"
+    }
    },
-   "response": {
-    "$ref": "Expense"
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "Distribution"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
-  }
- },
- "resources": {
-  "expenseEndpoint": {
-   "methods": {
-    "removeTripExpense": {
-     "id": "expenseendpoint.expenseEndpoint.removeTripExpense",
-     "path": "tripexpense/{id}",
-     "httpMethod": "DELETE",
-     "parameters": {
-      "id": {
-       "type": "string",
-       "required": true,
-       "format": "int64",
-       "location": "path"
-      }
-     },
-     "parameterOrder": [
-      "id"
-     ],
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    }
-   }
   }
  }
 }

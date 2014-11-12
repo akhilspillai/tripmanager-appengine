@@ -1,6 +1,7 @@
 package com.trip.expensemanager;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +22,8 @@ public class Expense {
 	private String amount;
 	private String currency;
 	private Date creationDate;
-	private Long[] expenseUserIds;
+	private List<Long> expenseUserIds;
+	private List<Float> expenseAmounts;
 	
 	public Long getId(){
 		return this.id;
@@ -91,12 +93,20 @@ public class Expense {
 		this.changerId = changerId;
 	}
 
-	public Long[] getExpenseUserIds() {
+	public List<Long> getExpenseUserIds() {
 		return expenseUserIds;
 	}
 
-	public void setExpenseUserIds(Long[] expenseUserIds) {
+	public void setExpenseUserIds(List<Long> expenseUserIds) {
 		this.expenseUserIds = expenseUserIds;
+	}
+
+	public List<Float> getExpenseAmounts() {
+		return expenseAmounts;
+	}
+
+	public void setExpenseAmounts(List<Float> expenseAmounts) {
+		this.expenseAmounts = expenseAmounts;
 	}	
 	
 }

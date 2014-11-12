@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/25ut731c9Q2KIW-R2ia21RwoyCM\"",
+ "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/T68x6KlNTwBQrWfDFgJIuSfzy1I\"",
  "discoveryVersion": "v1",
  "id": "expenseendpoint:v1",
  "name": "expenseendpoint",
@@ -107,6 +107,13 @@
     },
     "description": {
      "type": "string"
+    },
+    "expenseAmounts": {
+     "type": "array",
+     "items": {
+      "type": "number",
+      "format": "float"
+     }
     },
     "expenseUserIds": {
      "type": "array",

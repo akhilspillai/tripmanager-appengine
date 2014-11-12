@@ -2,7 +2,7 @@
   "extends" : "thirdParty.api",
   "abstract" : false,
   "root" : "https://healthy-dolphin-679.appspot.com/_ah/api",
-  "name" : "expenseendpoint",
+  "name" : "distributionendpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
@@ -27,14 +27,14 @@
   "ownerName" : "trip.com",
   "packagePath" : "expensemanager",
   "methods" : {
-    "expenseendpoint.getExpense" : {
-      "path" : "expense/{id}",
+    "distributionendpoint.getDistribution" : {
+      "path" : "distribution/{id}",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.getExpense",
+      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.getDistribution",
       "request" : {
         "parameters" : {
           "id" : {
@@ -48,14 +48,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "expenseendpoint.removeExpense" : {
-      "path" : "expense/{id}",
+    "distributionendpoint.removeDistribution" : {
+      "path" : "distribution/{id}",
       "httpMethod" : "DELETE",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.removeExpense",
+      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.removeDistribution",
       "request" : {
         "parameters" : {
           "id" : {
@@ -69,14 +69,14 @@
         "body" : "empty"
       }
     },
-    "expenseendpoint.updateExpense" : {
-      "path" : "expense",
+    "distributionendpoint.updateDistribution" : {
+      "path" : "distribution",
       "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.updateExpense",
+      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.updateDistribution",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -85,14 +85,30 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "expenseendpoint.listExpense" : {
-      "path" : "expense",
+    "distributionendpoint.insertDistribution" : {
+      "path" : "distribution",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.insertDistribution",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "distributionendpoint.listDistribution" : {
+      "path" : "distribution",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.listExpense",
+      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.listDistribution",
       "request" : {
         "parameters" : {
           "cursor" : {
@@ -102,126 +118,53 @@
           "limit" : {
             "type" : "int32",
             "required" : false
-          },
-          "tripId" : {
-            "type" : "int64",
-            "required" : false
-          },
-          "userId" : {
-            "type" : "int64",
-            "required" : false
-          },
-          "date" : {
-            "type" : "datetime",
-            "required" : false
           }
         },
         "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "expenseendpoint.insertExpense" : {
-      "path" : "expense",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.insertExpense",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "expenseendpoint.expenseEndpoint.removeTripExpense" : {
-      "path" : "tripexpense/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.removeTripExpense",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
       }
     }
   },
   "descriptor" : {
     "schemas" : {
-      "Expense" : {
-        "id" : "Expense",
+      "Distribution" : {
+        "id" : "Distribution",
         "type" : "object",
         "properties" : {
           "id" : {
             "type" : "string",
             "format" : "int64"
           },
-          "name" : {
-            "type" : "string"
+          "fromId" : {
+            "type" : "string",
+            "format" : "int64"
           },
-          "description" : {
-            "type" : "string"
-          },
-          "userId" : {
+          "toId" : {
             "type" : "string",
             "format" : "int64"
           },
           "tripId" : {
-            "type" : "string",
-            "format" : "int64"
-          },
-          "changerId" : {
             "type" : "string",
             "format" : "int64"
           },
           "amount" : {
             "type" : "string"
           },
-          "currency" : {
+          "paid" : {
             "type" : "string"
-          },
-          "creationDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "expenseUserIds" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "format" : "int64"
-            }
-          },
-          "expenseAmounts" : {
-            "type" : "array",
-            "items" : {
-              "type" : "number",
-              "format" : "float"
-            }
           }
         }
       },
-      "CollectionResponse_Expense" : {
-        "id" : "CollectionResponse_Expense",
+      "CollectionResponse_Distribution" : {
+        "id" : "CollectionResponse_Distribution",
         "type" : "object",
         "properties" : {
           "items" : {
             "type" : "array",
             "items" : {
-              "$ref" : "Expense"
+              "$ref" : "Distribution"
             }
           },
           "nextPageToken" : {
@@ -231,35 +174,33 @@
       }
     },
     "methods" : {
-      "com.trip.expensemanager.ExpenseEndpoint.getExpense" : {
+      "com.trip.expensemanager.DistributionEndpoint.getDistribution" : {
         "response" : {
-          "$ref" : "Expense"
+          "$ref" : "Distribution"
         }
       },
-      "com.trip.expensemanager.ExpenseEndpoint.removeExpense" : {
+      "com.trip.expensemanager.DistributionEndpoint.removeDistribution" : {
       },
-      "com.trip.expensemanager.ExpenseEndpoint.updateExpense" : {
+      "com.trip.expensemanager.DistributionEndpoint.updateDistribution" : {
         "request" : {
-          "$ref" : "Expense"
+          "$ref" : "Distribution"
         },
         "response" : {
-          "$ref" : "Expense"
+          "$ref" : "Distribution"
         }
       },
-      "com.trip.expensemanager.ExpenseEndpoint.listExpense" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Expense"
-        }
-      },
-      "com.trip.expensemanager.ExpenseEndpoint.insertExpense" : {
+      "com.trip.expensemanager.DistributionEndpoint.insertDistribution" : {
         "request" : {
-          "$ref" : "Expense"
+          "$ref" : "Distribution"
         },
         "response" : {
-          "$ref" : "Expense"
+          "$ref" : "Distribution"
         }
       },
-      "com.trip.expensemanager.ExpenseEndpoint.removeTripExpense" : {
+      "com.trip.expensemanager.DistributionEndpoint.listDistribution" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Distribution"
+        }
       }
     }
   }
