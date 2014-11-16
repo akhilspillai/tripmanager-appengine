@@ -208,8 +208,7 @@
           "expenseAmounts" : {
             "type" : "array",
             "items" : {
-              "type" : "number",
-              "format" : "float"
+              "type" : "string"
             }
           }
         }

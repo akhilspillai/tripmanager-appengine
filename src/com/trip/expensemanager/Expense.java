@@ -23,7 +23,7 @@ public class Expense {
 	private String currency;
 	private Date creationDate;
 	private List<Long> expenseUserIds;
-	private List<Float> expenseAmounts;
+	private List<String> expenseAmounts;
 	
 	public Long getId(){
 		return this.id;
@@ -101,11 +101,11 @@ public class Expense {
 		this.expenseUserIds = expenseUserIds;
 	}
 
-	public List<Float> getExpenseAmounts() {
+	public List<String> getExpenseAmounts() {
 		return expenseAmounts;
 	}
 
-	public void setExpenseAmounts(List<Float> expenseAmounts) {
+	public void setExpenseAmounts(List<String> expenseAmounts) {
 		this.expenseAmounts = expenseAmounts;
 	}	
 	
