@@ -1,17 +1,11 @@
 package com.trip.expensemanager;
 
 import com.trip.expensemanager.EMF;
-import com.google.android.gcm.server.Constants;
-import com.google.android.gcm.server.Message;
-import com.google.android.gcm.server.Result;
-import com.google.android.gcm.server.Sender;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.urlfetch.HTTPHeader;
 import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
@@ -24,14 +18,12 @@ import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 import javax.inject.Named;
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -65,10 +57,10 @@ public class ExpenseEndpoint {
 		try {
 			mgr = getEntityManager();
 			if(tripId!=null && userId==null){
-				query = mgr.createQuery("select from Expense E where E.tripId=:tripId_fk");
+				query = mgr.createQuery("select from Expense E where E.tripId=:tripId_fk order by E.creationDate");
 				query.setParameter("tripId_fk", tripId);
 			} else if(tripId!=null && userId!=null){
-				query = mgr.createQuery("select from Expense E where E.userId=:userId_fk and E.tripId=:tripId_fk");
+				query = mgr.createQuery("select from Expense E where E.userId=:userId_fk and E.tripId=:tripId_fk order by E.creationDate");
 				query.setParameter("userId_fk", userId);
 				query.setParameter("tripId_fk", tripId);
 			}else{
@@ -140,7 +132,8 @@ public class ExpenseEndpoint {
 		DeviceInfo devInfo=null;
 		List<Long> deviceIds=null;
 		if(trip!=null){
-			List<Long> userIds = trip.getUserIDs();
+			long changerId=expense.getChangerId();
+			List<Long> userIds = expense.getExpenseUserIds();
 			LogIn login;
 			LogInEndpoint loginEndpoint=new LogInEndpoint();
 			JSONArray jsonArr=new JSONArray();
@@ -150,10 +143,12 @@ public class ExpenseEndpoint {
 					deviceIds=login.getDeviceIDs();
 					if(deviceIds!=null){
 						for(long deviceId:deviceIds){
-							devInfo=devInfoendpoint.getDeviceInfo(deviceId);
-							if(devInfo!=null){
-								addToToSync("EA", retExpense.getId(), deviceId, retExpense.getUserId());
-								jsonArr.put(devInfo.getGcmRegId());
+							if(deviceId!=changerId){
+								devInfo=devInfoendpoint.getDeviceInfo(deviceId);
+								if(devInfo!=null){
+									addToToSync("EA", retExpense.getId(), deviceId, retExpense.getUserId());
+									jsonArr.put(devInfo.getGcmRegId());
+								}
 							}
 						}
 					}
@@ -217,6 +212,7 @@ public class ExpenseEndpoint {
 			if (!containsExpense(expense)) {
 				throw new EntityNotFoundException("Object does not exist");
 			}
+			List<Long> userIdsPrev=getExpense(expense.getId()).getExpenseUserIds();
 			mgr.persist(expense);
 			TripEndpoint tripEndpoint=new TripEndpoint();
 			Trip trip=tripEndpoint.getTrip(expense.getTripId());
@@ -224,7 +220,11 @@ public class ExpenseEndpoint {
 			DeviceInfo devInfo=null;
 			List<Long> deviceIds=null;
 			if(trip!=null){
-				List<Long> userIds = trip.getUserIDs();
+				long changerId=expense.getChangerId();
+				List<Long> userIds = expense.getExpenseUserIds();
+				if(userIdsPrev.size()>userIds.size()){
+					userIds=userIdsPrev;
+				}
 				LogIn login;
 				LogInEndpoint endpoint=new LogInEndpoint();
 				JSONArray jsonArr=new JSONArray();
@@ -234,10 +234,12 @@ public class ExpenseEndpoint {
 						deviceIds=login.getDeviceIDs();
 						if(deviceIds!=null){
 							for(long deviceId:deviceIds){
-								devInfo=devInfoendpoint.getDeviceInfo(deviceId);
-								if(devInfo!=null){
-									addToToSync("EU", expense.getId(), deviceId, expense.getUserId());
-									jsonArr.put(devInfo.getGcmRegId());
+								if(deviceId!=changerId){
+									devInfo=devInfoendpoint.getDeviceInfo(deviceId);
+									if(devInfo!=null){
+										addToToSync("EU", expense.getId(), deviceId, expense.getUserId());
+										jsonArr.put(devInfo.getGcmRegId());
+									}
 								}
 							}
 						}
@@ -272,7 +274,7 @@ public class ExpenseEndpoint {
 			TripEndpoint tripEndpoint=new TripEndpoint();
 			Trip trip=tripEndpoint.getTrip(expense.getTripId());
 			if(trip!=null){
-				List<Long> userIds = trip.getUserIDs();
+				List<Long> userIds = expense.getExpenseUserIds();
 				LogIn login;
 				LogInEndpoint endpoint=new LogInEndpoint();
 				JSONArray jsonArr=new JSONArray();

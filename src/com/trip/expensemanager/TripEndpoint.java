@@ -126,7 +126,7 @@ public class TripEndpoint {
 						if(deviceId!=changerId){
 							devInfo=devInfoendpoint.getDeviceInfo(deviceId);
 							if(devInfo!=null){
-								addToToSync("TA", retTrip.getId(), deviceId, retTrip.getChangerId());
+								addToToSync("TA", retTrip.getId(), deviceId, retTrip.getAdmin());
 								jsonArr.put(devInfo.getGcmRegId());
 							}
 						}
@@ -200,26 +200,44 @@ public class TripEndpoint {
 					expenseEndpoint.removeTripExpense(expTemp.getId());
 				}
 			}
+			long changerId=trip.getChangerId();
 			DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
 			DeviceInfo devInfo=null;
 			List<Long> deviceIds=null;
+			long lngChangerId=0L;
 			JSONArray jsonArr=new JSONArray();
+			
+			for (Long userId:userIds) {
+				login=endpoint.getLogIn(userId);
+				if(login!=null){
+					deviceIds=login.getDeviceIDs();
+					if(deviceIds!=null){
+						if(deviceIds.contains(changerId)){
+							lngChangerId=userId;
+							break;
+						}
+					}
+				}
+			}
+			
 			for (Long userId:userIds) {
 				login=endpoint.getLogIn(userId);
 				if(login!=null){
 					deviceIds=login.getDeviceIDs();
 					if(deviceIds!=null){
 						for(long deviceId:deviceIds){
-							devInfo=devInfoendpoint.getDeviceInfo(deviceId);
-							if(devInfo!=null){
-								if(userAdded){
-									addToToSync("UA", trip.getId(), deviceId, trip.getChangerId());
-								} else if(userRemoved){
-									addToToSync("UD", trip.getId(), deviceId, trip.getChangerId());
-								} else{
-									addToToSync("TU", trip.getId(), deviceId, trip.getChangerId());
+							if(deviceId!=changerId){
+								devInfo=devInfoendpoint.getDeviceInfo(deviceId);
+								if(devInfo!=null){
+									if(userAdded){
+										addToToSync("UA", trip.getId(), deviceId, lngChangerId);
+									} else if(userRemoved){
+										addToToSync("UD", trip.getId(), deviceId, lngChangerId);
+									} else{
+										addToToSync("TU", trip.getId(), deviceId, lngChangerId);
+									}
+									jsonArr.put(devInfo.getGcmRegId());
 								}
-								jsonArr.put(devInfo.getGcmRegId());
 							}
 						}
 					}
