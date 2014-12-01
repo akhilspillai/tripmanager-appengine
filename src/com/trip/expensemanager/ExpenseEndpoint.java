@@ -18,6 +18,7 @@ import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -158,8 +159,8 @@ public class ExpenseEndpoint {
 		}
 		return retExpense;
 	}
-	
-	
+
+
 	private Expense insertNewExpense(Expense expense){
 		EntityManager mgr = getEntityManager();
 		try {
@@ -183,18 +184,22 @@ public class ExpenseEndpoint {
 	private void doSendViaGcm(JSONArray jsonArr) throws IOException, JSONException {
 		String json ="{}";
 		//		jsonArr.put("APA91bFgxjBiEAGTAUfEDUKNTWQbgImWqGoafiN1sjmSvaLF7v0x8IAFUNcCvOXpI3_VuJfLEOFpoxapCa6h37A1NJckgtVA3_kl3BXvLiR3Mf9aEJptrR6QDOWOR44fXHrLk1FalqMe-q2xdpic-0iCBdUWO7bdtg");
-		JSONObject jsonObj=new JSONObject();
-		jsonObj.put("registration_ids", jsonArr);
+		if(jsonArr.length()!=0){
+			JSONObject jsonObj=new JSONObject();
+			jsonObj.put("registration_ids", jsonArr);
 
-		json=jsonObj.toString();
-		log.info("request "+json);
-		URL url = new URL("https://android.googleapis.com/gcm/send");
-		HTTPRequest request = new HTTPRequest(url, HTTPMethod.POST);
-		request.addHeader(new HTTPHeader("Content-Type","application/json")); 
-		request.addHeader(new HTTPHeader("Authorization", "key="+API_KEY));
-		request.setPayload(json.getBytes("UTF-8"));
-		HTTPResponse response = URLFetchServiceFactory.getURLFetchService().fetch(request);
-		log.info("Content "+new String(response.getContent()));
+			json=jsonObj.toString();
+			log.info("request "+json);
+			URL url = new URL("https://android.googleapis.com/gcm/send");
+			HTTPRequest request = new HTTPRequest(url, HTTPMethod.POST);
+			request.addHeader(new HTTPHeader("Content-Type","application/json")); 
+			request.addHeader(new HTTPHeader("Authorization", "key="+API_KEY));
+			request.setPayload(json.getBytes("UTF-8"));
+			HTTPResponse response = URLFetchServiceFactory.getURLFetchService().fetch(request);
+			log.info("Content "+new String(response.getContent()));
+		} else{
+			log.info("Array is empty");
+		}
 	}
 
 	/**
@@ -213,7 +218,11 @@ public class ExpenseEndpoint {
 				throw new EntityNotFoundException("Object does not exist");
 			}
 			List<Long> userIdsPrev=getExpense(expense.getId()).getExpenseUserIds();
-			mgr.persist(expense);
+			List<Long> userIds = expense.getExpenseUserIds();
+			List<Long> userIdsTemp=new ArrayList<Long>();
+			userIdsTemp.addAll(userIds);
+			expense.setExpenseUserIds(userIdsTemp);
+			mgr.merge(expense);
 			TripEndpoint tripEndpoint=new TripEndpoint();
 			Trip trip=tripEndpoint.getTrip(expense.getTripId());
 			DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
@@ -221,9 +230,10 @@ public class ExpenseEndpoint {
 			List<Long> deviceIds=null;
 			if(trip!=null){
 				long changerId=expense.getChangerId();
-				List<Long> userIds = expense.getExpenseUserIds();
-				if(userIdsPrev.size()>userIds.size()){
-					userIds=userIdsPrev;
+				for(Long userId:userIdsPrev){
+					if(!userIds.contains(userId)){
+						userIds.add(userId);
+					}
 				}
 				LogIn login;
 				LogInEndpoint endpoint=new LogInEndpoint();
