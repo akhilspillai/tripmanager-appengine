@@ -118,6 +118,14 @@
           "limit" : {
             "type" : "int32",
             "required" : false
+          },
+          "tripId" : {
+            "type" : "int64",
+            "required" : false
+          },
+          "userId" : {
+            "type" : "int64",
+            "required" : false
           }
         },
         "body" : "empty"
@@ -154,6 +162,14 @@
           },
           "paid" : {
             "type" : "string"
+          },
+          "creationDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "changerId" : {
+            "type" : "string",
+            "format" : "int64"
           }
         }
       },

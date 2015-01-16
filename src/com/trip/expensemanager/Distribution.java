@@ -18,6 +18,8 @@ public class Distribution {
 	private Long tripId;
 	private String amount;
 	private String paid;
+	private Date creationDate;
+	private Long changerId;
 	
 	public Long getId(){
 		return this.id;
@@ -52,6 +54,22 @@ public class Distribution {
 	}
 	public void setPaid(String paid) {
 		this.paid = paid;
+	}
+
+	public Long getChangerId() {
+		return changerId;
+	}
+
+	public void setChangerId(Long changerId) {
+		this.changerId = changerId;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 	
 	

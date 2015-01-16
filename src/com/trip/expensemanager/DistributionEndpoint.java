@@ -1,15 +1,25 @@
 package com.trip.expensemanager;
 
 import com.trip.expensemanager.EMF;
-
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
+import com.google.appengine.api.urlfetch.HTTPHeader;
+import com.google.appengine.api.urlfetch.HTTPMethod;
+import com.google.appengine.api.urlfetch.HTTPRequest;
+import com.google.appengine.api.urlfetch.HTTPResponse;
+import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.appengine.datanucleus.query.JPACursorHelper;
+import com.google.appengine.labs.repackaged.org.json.JSONArray;
+import com.google.appengine.labs.repackaged.org.json.JSONException;
+import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 import javax.inject.Named;
@@ -20,6 +30,9 @@ import javax.persistence.Query;
 
 @Api(name = "distributionendpoint", namespace = @ApiNamespace(ownerDomain = "trip.com", ownerName = "trip.com", packagePath = "expensemanager"))
 public class DistributionEndpoint {
+
+	private static final String API_KEY = "AIzaSyAIG5GBeL2dYuoN5525AqOmHydvAoW7_LE";
+	private static final Logger log = Logger.getLogger(ExpenseEndpoint.class.getName());
 
 	/**
 	 * This method lists all the entities inserted in datastore.
@@ -32,7 +45,9 @@ public class DistributionEndpoint {
 	@ApiMethod(name = "listDistribution")
 	public CollectionResponse<Distribution> listDistribution(
 			@Nullable @Named("cursor") String cursorString,
-			@Nullable @Named("limit") Integer limit) {
+			@Nullable @Named("limit") Integer limit,
+			@Nullable @Named("tripId") Long tripId,
+			@Nullable @Named("userId") Long userId) {
 
 		EntityManager mgr = null;
 		Cursor cursor = null;
@@ -40,8 +55,16 @@ public class DistributionEndpoint {
 
 		try {
 			mgr = getEntityManager();
-			Query query = mgr
-					.createQuery("select from Distribution as Distribution");
+			Query query;
+			if(tripId!=null && userId!=null){
+				query = mgr.createQuery("select from Distribution D where D.fromId=:fromId_fk or D.toId=:toId_fk and D.tripId=:tripId_fk order by D.creationDate");
+				query.setParameter("fromId_fk", userId);
+				query.setParameter("toId_fk", userId);
+				query.setParameter("tripId_fk", tripId);
+			} else{
+				query = mgr.createQuery("select from Distribution as Distribution");
+			}
+			
 			if (cursorString != null && cursorString != "") {
 				cursor = Cursor.fromWebSafeString(cursorString);
 				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
@@ -94,14 +117,87 @@ public class DistributionEndpoint {
 	 *
 	 * @param distribution the entity to be inserted.
 	 * @return The inserted entity.
+	 * @throws IOException 
+	 * @throws JSONException 
 	 */
 	@ApiMethod(name = "insertDistribution")
-	public Distribution insertDistribution(Distribution distribution) {
+	public Distribution insertDistribution(Distribution distribution) throws IOException, JSONException {
+		Distribution retDestribution;
+		DistributionEndpoint distEndpoint=new DistributionEndpoint();
+		retDestribution=distEndpoint.insertNewDistribution(distribution);
+		LogIn login;
+		LogInEndpoint loginEndpoint=new LogInEndpoint();
+		JSONArray jsonArr=new JSONArray();
+		List<Long> deviceIds=null;
+		DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
+		DeviceInfo devInfo=null;
+		login=loginEndpoint.getLogIn(retDestribution.getToId());
+		long changerId=retDestribution.getChangerId();
+		if(login!=null){
+			deviceIds=login.getDeviceIDs();
+			if(deviceIds!=null){
+				for(long deviceId:deviceIds){
+					if(deviceId!=changerId){
+						devInfo=devInfoendpoint.getDeviceInfo(deviceId);
+						if(devInfo!=null){
+							addToToSync("DA", retDestribution.getId(), deviceId, retDestribution.getToId());
+							jsonArr.put(devInfo.getGcmRegId());
+						}
+					}
+				}
+			}
+		}
+		login=loginEndpoint.getLogIn(retDestribution.getFromId());
+		if(login!=null){
+			deviceIds=login.getDeviceIDs();
+			if(deviceIds!=null){
+				for(long deviceId:deviceIds){
+					devInfo=devInfoendpoint.getDeviceInfo(deviceId);
+					if(devInfo!=null){
+						addToToSync("DA", retDestribution.getId(), deviceId, retDestribution.getToId());
+						jsonArr.put(devInfo.getGcmRegId());
+					}
+				}
+			}
+		}
+		doSendViaGcm(jsonArr);
+		return retDestribution;
+	}
+	
+	private void addToToSync(String message, Long lngId, Long userId, Long changerId) throws IOException {
+		ToSync toSync=new ToSync();
+		toSync.setSyncItem(lngId);
+		toSync.setSyncType(message);
+		toSync.setUserId(userId);
+		toSync.setChangerId(changerId);
+		ToSyncEndpoint toSyncEndpoint=new ToSyncEndpoint();
+		toSyncEndpoint.insertToSync(toSync);
+	}
+
+	private void doSendViaGcm(JSONArray jsonArr) throws IOException, JSONException {
+		String json ="{}";
+		//		jsonArr.put("APA91bFgxjBiEAGTAUfEDUKNTWQbgImWqGoafiN1sjmSvaLF7v0x8IAFUNcCvOXpI3_VuJfLEOFpoxapCa6h37A1NJckgtVA3_kl3BXvLiR3Mf9aEJptrR6QDOWOR44fXHrLk1FalqMe-q2xdpic-0iCBdUWO7bdtg");
+		if(jsonArr.length()!=0){
+			JSONObject jsonObj=new JSONObject();
+			jsonObj.put("registration_ids", jsonArr);
+
+			json=jsonObj.toString();
+			log.info("request "+json);
+			URL url = new URL("https://android.googleapis.com/gcm/send");
+			HTTPRequest request = new HTTPRequest(url, HTTPMethod.POST);
+			request.addHeader(new HTTPHeader("Content-Type","application/json")); 
+			request.addHeader(new HTTPHeader("Authorization", "key="+API_KEY));
+			request.setPayload(json.getBytes("UTF-8"));
+			HTTPResponse response = URLFetchServiceFactory.getURLFetchService().fetch(request);
+			log.info("Content "+new String(response.getContent()));
+		} else{
+			log.info("Array is empty");
+		}
+	}
+
+	private Distribution insertNewDistribution(Distribution distribution) {
 		EntityManager mgr = getEntityManager();
 		try {
-			if (containsDistribution(distribution)) {
-				throw new EntityExistsException("Object already exists");
-			}
 			mgr.persist(distribution);
 		} finally {
 			mgr.close();

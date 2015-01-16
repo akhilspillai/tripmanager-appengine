@@ -5,4 +5,9 @@
 		<property name="tripId" direction="asc" />
 		<property name="creationDate" direction="asc" />
 	</datastore-index>
+	<datastore-index kind="Distribution" ancestor="false"
+		source="manual">
+		<property name="tripId" direction="asc" />
+		<property name="creationDate" direction="asc" />
+	</datastore-index>
 </datastore-indexes>

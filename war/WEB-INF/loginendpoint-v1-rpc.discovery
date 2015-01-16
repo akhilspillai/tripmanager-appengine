@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/Ww8JEg7PPyA25jWpIQmIVcclw4U\"",
+ "etag": "\"c05bU6zpvXPOpQakG5gG3IOJh8Y/Ww8JEg7PPyA25jWpIQmIVcclw4U\"",
  "discoveryVersion": "v1",
  "id": "loginendpoint:v1",
  "name": "loginendpoint",

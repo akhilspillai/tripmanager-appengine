@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"9mnLCPwbyZOHH18t8ExzO2gqgTk/LFOXXiZ61VuLVSbyZYnYAYfuqZI\"",
+ "etag": "\"c05bU6zpvXPOpQakG5gG3IOJh8Y/0nYxj7pB2bbTrHoCbTOLtXZR1O0\"",
  "discoveryVersion": "v1",
  "id": "distributionendpoint:v1",
  "name": "distributionendpoint",
@@ -94,6 +94,14 @@
     "amount": {
      "type": "string"
     },
+    "changerId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "creationDate": {
+     "type": "string",
+     "format": "date-time"
+    },
     "fromId": {
      "type": "string",
      "format": "int64"
@@ -164,6 +172,14 @@
     "limit": {
      "type": "integer",
      "format": "int32"
+    },
+    "tripId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "userId": {
+     "type": "string",
+     "format": "int64"
     }
    },
    "returns": {
