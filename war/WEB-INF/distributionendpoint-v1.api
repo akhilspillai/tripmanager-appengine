@@ -122,10 +122,6 @@
           "tripId" : {
             "type" : "int64",
             "required" : false
-          },
-          "userId" : {
-            "type" : "int64",
-            "required" : false
           }
         },
         "body" : "empty"

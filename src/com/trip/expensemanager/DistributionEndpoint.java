@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 import javax.inject.Named;
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -46,8 +45,7 @@ public class DistributionEndpoint {
 	public CollectionResponse<Distribution> listDistribution(
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("limit") Integer limit,
-			@Nullable @Named("tripId") Long tripId,
-			@Nullable @Named("userId") Long userId) {
+			@Nullable @Named("tripId") Long tripId) {
 
 		EntityManager mgr = null;
 		Cursor cursor = null;
@@ -56,10 +54,8 @@ public class DistributionEndpoint {
 		try {
 			mgr = getEntityManager();
 			Query query;
-			if(tripId!=null && userId!=null){
-				query = mgr.createQuery("select from Distribution D where D.fromId=:fromId_fk or D.toId=:toId_fk and D.tripId=:tripId_fk order by D.creationDate");
-				query.setParameter("fromId_fk", userId);
-				query.setParameter("toId_fk", userId);
+			if(tripId!=null){
+				query = mgr.createQuery("select from Distribution D where D.tripId=:tripId_fk order by D.creationDate");
 				query.setParameter("tripId_fk", tripId);
 			} else{
 				query = mgr.createQuery("select from Distribution as Distribution");
@@ -133,29 +129,31 @@ public class DistributionEndpoint {
 		DeviceInfo devInfo=null;
 		login=loginEndpoint.getLogIn(retDestribution.getToId());
 		long changerId=retDestribution.getChangerId();
-		if(login!=null){
-			deviceIds=login.getDeviceIDs();
-			if(deviceIds!=null){
-				for(long deviceId:deviceIds){
-					if(deviceId!=changerId){
-						devInfo=devInfoendpoint.getDeviceInfo(deviceId);
-						if(devInfo!=null){
-							addToToSync("DA", retDestribution.getId(), deviceId, retDestribution.getToId());
-							jsonArr.put(devInfo.getGcmRegId());
-						}
-					}
+		TripEndpoint tripEndpoint=new TripEndpoint();
+		Trip trip=tripEndpoint.getTrip(distribution.getTripId());
+		List<Long> userIds=trip.getUserIDs();
+		if(trip!=null){
+			for(Long userId:userIds){
+				if(!userIds.contains(userId)){
+					userIds.add(userId);
 				}
 			}
-		}
-		login=loginEndpoint.getLogIn(retDestribution.getFromId());
-		if(login!=null){
-			deviceIds=login.getDeviceIDs();
-			if(deviceIds!=null){
-				for(long deviceId:deviceIds){
-					devInfo=devInfoendpoint.getDeviceInfo(deviceId);
-					if(devInfo!=null){
-						addToToSync("DA", retDestribution.getId(), deviceId, retDestribution.getToId());
-						jsonArr.put(devInfo.getGcmRegId());
+			List<Long> tripUserIds=trip.getUserIDs();
+			LogInEndpoint endpoint=new LogInEndpoint();
+			for (Long userId:tripUserIds) {
+				login=endpoint.getLogIn(userId);
+				if(login!=null){
+					deviceIds=login.getDeviceIDs();
+					if(deviceIds!=null){
+						for(long deviceId:deviceIds){
+							if(deviceId!=changerId){
+								devInfo=devInfoendpoint.getDeviceInfo(deviceId);
+								if(devInfo!=null){
+									addToToSync("DA", retDestribution.getId(), deviceId, retDestribution.getToId());
+									jsonArr.put(devInfo.getGcmRegId());
+								}
+							}
+						}
 					}
 				}
 			}

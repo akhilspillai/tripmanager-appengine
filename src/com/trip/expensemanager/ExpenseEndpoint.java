@@ -134,7 +134,7 @@ public class ExpenseEndpoint {
 		List<Long> deviceIds=null;
 		if(trip!=null){
 			long changerId=expense.getChangerId();
-			List<Long> userIds = expense.getExpenseUserIds();
+			List<Long> userIds = trip.getUserIDs();
 			LogIn login;
 			LogInEndpoint loginEndpoint=new LogInEndpoint();
 			JSONArray jsonArr=new JSONArray();
@@ -235,10 +235,11 @@ public class ExpenseEndpoint {
 						userIds.add(userId);
 					}
 				}
+				List<Long> tripUserIds=trip.getUserIDs();
 				LogIn login;
 				LogInEndpoint endpoint=new LogInEndpoint();
 				JSONArray jsonArr=new JSONArray();
-				for (Long userId:userIds) {
+				for (Long userId:tripUserIds) {
 					login=endpoint.getLogIn(userId);
 					if(login!=null){
 						deviceIds=login.getDeviceIDs();
@@ -284,7 +285,7 @@ public class ExpenseEndpoint {
 			TripEndpoint tripEndpoint=new TripEndpoint();
 			Trip trip=tripEndpoint.getTrip(expense.getTripId());
 			if(trip!=null){
-				List<Long> userIds = expense.getExpenseUserIds();
+				List<Long> userIds = trip.getUserIDs();
 				LogIn login;
 				LogInEndpoint endpoint=new LogInEndpoint();
 				JSONArray jsonArr=new JSONArray();
