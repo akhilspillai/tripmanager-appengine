@@ -27,6 +27,27 @@
   "ownerName" : "trip.com",
   "packagePath" : "expensemanager",
   "methods" : {
+    "tripendpoint.removeTrip" : {
+      "path" : "trip/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.TripEndpoint.removeTrip",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
     "tripendpoint.updateTrip" : {
       "path" : "trip",
       "httpMethod" : "PUT",
@@ -35,6 +56,22 @@
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
       "rosyMethod" : "com.trip.expensemanager.TripEndpoint.updateTrip",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tripendpoint.insertTrip" : {
+      "path" : "trip",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.TripEndpoint.insertTrip",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -68,27 +105,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "tripendpoint.removeTrip" : {
-      "path" : "trip/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.TripEndpoint.removeTrip",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
     "tripendpoint.getTrip" : {
       "path" : "trip/{id}",
       "httpMethod" : "GET",
@@ -105,22 +121,6 @@
           }
         },
         "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "tripendpoint.insertTrip" : {
-      "path" : "trip",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.TripEndpoint.insertTrip",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -178,7 +178,17 @@
       }
     },
     "methods" : {
+      "com.trip.expensemanager.TripEndpoint.removeTrip" : {
+      },
       "com.trip.expensemanager.TripEndpoint.updateTrip" : {
+        "request" : {
+          "$ref" : "Trip"
+        },
+        "response" : {
+          "$ref" : "Trip"
+        }
+      },
+      "com.trip.expensemanager.TripEndpoint.insertTrip" : {
         "request" : {
           "$ref" : "Trip"
         },
@@ -191,17 +201,7 @@
           "$ref" : "CollectionResponse_Trip"
         }
       },
-      "com.trip.expensemanager.TripEndpoint.removeTrip" : {
-      },
       "com.trip.expensemanager.TripEndpoint.getTrip" : {
-        "response" : {
-          "$ref" : "Trip"
-        }
-      },
-      "com.trip.expensemanager.TripEndpoint.insertTrip" : {
-        "request" : {
-          "$ref" : "Trip"
-        },
         "response" : {
           "$ref" : "Trip"
         }

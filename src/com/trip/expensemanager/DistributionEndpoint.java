@@ -60,7 +60,7 @@ public class DistributionEndpoint {
 			} else{
 				query = mgr.createQuery("select from Distribution as Distribution");
 			}
-			
+
 			if (cursorString != null && cursorString != "") {
 				cursor = Cursor.fromWebSafeString(cursorString);
 				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
@@ -131,13 +131,7 @@ public class DistributionEndpoint {
 		long changerId=retDestribution.getChangerId();
 		TripEndpoint tripEndpoint=new TripEndpoint();
 		Trip trip=tripEndpoint.getTrip(distribution.getTripId());
-		List<Long> userIds=trip.getUserIDs();
 		if(trip!=null){
-			for(Long userId:userIds){
-				if(!userIds.contains(userId)){
-					userIds.add(userId);
-				}
-			}
 			List<Long> tripUserIds=trip.getUserIDs();
 			LogInEndpoint endpoint=new LogInEndpoint();
 			for (Long userId:tripUserIds) {
@@ -161,7 +155,7 @@ public class DistributionEndpoint {
 		doSendViaGcm(jsonArr);
 		return retDestribution;
 	}
-	
+
 	private void addToToSync(String message, Long lngId, Long userId, Long changerId) throws IOException {
 		ToSync toSync=new ToSync();
 		toSync.setSyncItem(lngId);
@@ -260,5 +254,4 @@ public class DistributionEndpoint {
 	private static EntityManager getEntityManager() {
 		return EMF.get().createEntityManager();
 	}
-
 }

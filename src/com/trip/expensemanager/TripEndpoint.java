@@ -145,7 +145,7 @@ public class TripEndpoint {
 		}
 		return trip;
 	}
-	
+
 	private Trip insertNewTrip(Trip trip) {
 		EntityManager mgr = getEntityManager();
 		try {
@@ -180,47 +180,50 @@ public class TripEndpoint {
 			//			Sender sender = new Sender(MessageEndpoint.API_KEY);
 			List<Long> userIdsTemp=tripTemp.getUserIDs();
 			List<Long> userIds = trip.getUserIDs();
+			List<Long> userIdsToSync=userIds;
 			userAdded=userIdsTemp.size()<userIds.size();
 			userRemoved=userIdsTemp.size()>userIds.size();
 			LogIn login;
 			LogInEndpoint endpoint=new LogInEndpoint();
-			ExpenseEndpoint expenseEndpoint=new ExpenseEndpoint();
+			DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
+			DeviceInfo devInfo=null;
 			List<Long> lstTrips=null;
+			long lngChangerId=0L;
 			if(userRemoved){
-				login=endpoint.getLogIn(trip.getChangerId());
+				for (Long userIdTemp:userIdsTemp) {
+					if(!userIds.contains(userIdTemp)){
+						lngChangerId=userIdTemp;
+						break;
+					}
+				}
+				login=endpoint.getLogIn(lngChangerId);
 				lstTrips=login.getTripIDs();
 				if(lstTrips!=null){
-					lstTrips.remove(trip.getChangerId());
+					lstTrips.remove(trip.getId());
 				}
 				login.setTripIDs(lstTrips);
 				endpoint.mergeLogIn(login);
-				CollectionResponse<Expense> expensesCollResp = expenseEndpoint.listExpense(null, null, trip.getId(), trip.getChangerId(), null);
-				Collection<Expense> expenses = expensesCollResp.getItems();
-				for(Expense expTemp:expenses){
-					expenseEndpoint.removeTripExpense(expTemp.getId());
-				}
+				userIdsToSync=userIdsTemp;
 			}
 			long changerId=trip.getChangerId();
-			DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
-			DeviceInfo devInfo=null;
 			List<Long> deviceIds=null;
-			long lngChangerId=0L;
 			JSONArray jsonArr=new JSONArray();
-			
-			for (Long userId:userIds) {
-				login=endpoint.getLogIn(userId);
-				if(login!=null){
-					deviceIds=login.getDeviceIDs();
-					if(deviceIds!=null){
-						if(deviceIds.contains(changerId)){
-							lngChangerId=userId;
-							break;
+			if(!userRemoved){
+				for (Long userId:userIds) {
+					login=endpoint.getLogIn(userId);
+					if(login!=null){
+						deviceIds=login.getDeviceIDs();
+						if(deviceIds!=null){
+							if(deviceIds.contains(changerId)){
+								lngChangerId=userId;
+								break;
+							}
 						}
 					}
 				}
 			}
-			
-			for (Long userId:userIds) {
+
+			for (Long userId:userIdsToSync) {
 				login=endpoint.getLogIn(userId);
 				if(login!=null){
 					deviceIds=login.getDeviceIDs();
@@ -307,6 +310,12 @@ public class TripEndpoint {
 				Collection<Expense> expenses=result.getItems();
 				for(Expense expenseTemp:expenses){
 					expenseEndpoint.removeTripExpense(expenseTemp.getId());
+				}
+				DistributionEndpoint distEndpoint=new DistributionEndpoint();
+				CollectionResponse<Distribution> distResult = distEndpoint.listDistribution(null, null, id);
+				Collection<Distribution> distributions=distResult.getItems();
+				for(Distribution distTemp:distributions){
+					distEndpoint.removeDistribution(distTemp.getId());
 				}
 				DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
 				DeviceInfo devInfo=null;

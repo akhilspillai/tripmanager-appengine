@@ -27,22 +27,6 @@
   "ownerName" : "trip.com",
   "packagePath" : "expensemanager",
   "methods" : {
-    "tosyncendpoint.insertToSync" : {
-      "path" : "tosync",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ToSyncEndpoint.insertToSync",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "tosyncendpoint.updateToSync" : {
       "path" : "tosync",
       "httpMethod" : "PUT",
@@ -51,6 +35,22 @@
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
       "rosyMethod" : "com.trip.expensemanager.ToSyncEndpoint.updateToSync",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tosyncendpoint.insertToSync" : {
+      "path" : "tosync",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.ToSyncEndpoint.insertToSync",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -183,7 +183,7 @@
       }
     },
     "methods" : {
-      "com.trip.expensemanager.ToSyncEndpoint.insertToSync" : {
+      "com.trip.expensemanager.ToSyncEndpoint.updateToSync" : {
         "request" : {
           "$ref" : "ToSync"
         },
@@ -191,7 +191,7 @@
           "$ref" : "ToSync"
         }
       },
-      "com.trip.expensemanager.ToSyncEndpoint.updateToSync" : {
+      "com.trip.expensemanager.ToSyncEndpoint.insertToSync" : {
         "request" : {
           "$ref" : "ToSync"
         },

@@ -27,17 +27,46 @@
   "ownerName" : "trip.com",
   "packagePath" : "expensemanager",
   "methods" : {
-    "deviceinfoendpoint.insertDeviceInfo" : {
+    "deviceinfoendpoint.updateDeviceInfo" : {
       "path" : "deviceinfo",
-      "httpMethod" : "POST",
+      "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.DeviceInfoEndpoint.insertDeviceInfo",
+      "rosyMethod" : "com.trip.expensemanager.DeviceInfoEndpoint.updateDeviceInfo",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "deviceinfoendpoint.listDeviceInfo" : {
+      "path" : "deviceinfo",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.DeviceInfoEndpoint.listDeviceInfo",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "limit" : {
+            "type" : "int32",
+            "required" : false
+          },
+          "gcmRegId" : {
+            "type" : "string",
+            "required" : false
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -85,43 +114,14 @@
         "body" : "empty"
       }
     },
-    "deviceinfoendpoint.listDeviceInfo" : {
+    "deviceinfoendpoint.insertDeviceInfo" : {
       "path" : "deviceinfo",
-      "httpMethod" : "GET",
+      "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.DeviceInfoEndpoint.listDeviceInfo",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "limit" : {
-            "type" : "int32",
-            "required" : false
-          },
-          "gcmRegId" : {
-            "type" : "string",
-            "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "deviceinfoendpoint.updateDeviceInfo" : {
-      "path" : "deviceinfo",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.DeviceInfoEndpoint.updateDeviceInfo",
+      "rosyMethod" : "com.trip.expensemanager.DeviceInfoEndpoint.insertDeviceInfo",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -166,12 +166,17 @@
       }
     },
     "methods" : {
-      "com.trip.expensemanager.DeviceInfoEndpoint.insertDeviceInfo" : {
+      "com.trip.expensemanager.DeviceInfoEndpoint.updateDeviceInfo" : {
         "request" : {
           "$ref" : "DeviceInfo"
         },
         "response" : {
           "$ref" : "DeviceInfo"
+        }
+      },
+      "com.trip.expensemanager.DeviceInfoEndpoint.listDeviceInfo" : {
+        "response" : {
+          "$ref" : "CollectionResponse_DeviceInfo"
         }
       },
       "com.trip.expensemanager.DeviceInfoEndpoint.getDeviceInfo" : {
@@ -181,12 +186,7 @@
       },
       "com.trip.expensemanager.DeviceInfoEndpoint.removeDeviceInfo" : {
       },
-      "com.trip.expensemanager.DeviceInfoEndpoint.listDeviceInfo" : {
-        "response" : {
-          "$ref" : "CollectionResponse_DeviceInfo"
-        }
-      },
-      "com.trip.expensemanager.DeviceInfoEndpoint.updateDeviceInfo" : {
+      "com.trip.expensemanager.DeviceInfoEndpoint.insertDeviceInfo" : {
         "request" : {
           "$ref" : "DeviceInfo"
         },

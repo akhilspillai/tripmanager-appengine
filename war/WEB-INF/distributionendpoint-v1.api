@@ -27,22 +27,33 @@
   "ownerName" : "trip.com",
   "packagePath" : "expensemanager",
   "methods" : {
-    "distributionendpoint.getDistribution" : {
-      "path" : "distribution/{id}",
-      "httpMethod" : "GET",
+    "distributionendpoint.insertDistribution" : {
+      "path" : "distribution",
+      "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.getDistribution",
+      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.insertDistribution",
       "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "distributionendpoint.updateDistribution" : {
+      "path" : "distribution",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.updateDistribution",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -69,33 +80,22 @@
         "body" : "empty"
       }
     },
-    "distributionendpoint.updateDistribution" : {
-      "path" : "distribution",
-      "httpMethod" : "PUT",
+    "distributionendpoint.getDistribution" : {
+      "path" : "distribution/{id}",
+      "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.updateDistribution",
+      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.getDistribution",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "distributionendpoint.insertDistribution" : {
-      "path" : "distribution",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.insertDistribution",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -186,12 +186,13 @@
       }
     },
     "methods" : {
-      "com.trip.expensemanager.DistributionEndpoint.getDistribution" : {
+      "com.trip.expensemanager.DistributionEndpoint.insertDistribution" : {
+        "request" : {
+          "$ref" : "Distribution"
+        },
         "response" : {
           "$ref" : "Distribution"
         }
-      },
-      "com.trip.expensemanager.DistributionEndpoint.removeDistribution" : {
       },
       "com.trip.expensemanager.DistributionEndpoint.updateDistribution" : {
         "request" : {
@@ -201,10 +202,9 @@
           "$ref" : "Distribution"
         }
       },
-      "com.trip.expensemanager.DistributionEndpoint.insertDistribution" : {
-        "request" : {
-          "$ref" : "Distribution"
-        },
+      "com.trip.expensemanager.DistributionEndpoint.removeDistribution" : {
+      },
+      "com.trip.expensemanager.DistributionEndpoint.getDistribution" : {
         "response" : {
           "$ref" : "Distribution"
         }
