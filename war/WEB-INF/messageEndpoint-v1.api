@@ -27,27 +27,6 @@
   "ownerName" : "trip.com",
   "packagePath" : "expensemanager",
   "methods" : {
-    "messageEndpoint.sendMessage" : {
-      "path" : "sendMessage/{message}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.MessageEndpoint.sendMessage",
-      "request" : {
-        "parameters" : {
-          "message" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
     "messageEndpoint.listMessages" : {
       "path" : "messagedata",
       "httpMethod" : "GET",
@@ -71,6 +50,27 @@
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "messageEndpoint.sendMessage" : {
+      "path" : "sendMessage/{message}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.MessageEndpoint.sendMessage",
+      "request" : {
+        "parameters" : {
+          "message" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
       }
     }
   },
@@ -137,12 +137,12 @@
       }
     },
     "methods" : {
-      "com.trip.expensemanager.MessageEndpoint.sendMessage" : {
-      },
       "com.trip.expensemanager.MessageEndpoint.listMessages" : {
         "response" : {
           "$ref" : "CollectionResponse_MessageData"
         }
+      },
+      "com.trip.expensemanager.MessageEndpoint.sendMessage" : {
       }
     }
   }

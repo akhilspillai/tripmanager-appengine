@@ -27,22 +27,6 @@
   "ownerName" : "trip.com",
   "packagePath" : "expensemanager",
   "methods" : {
-    "tosyncendpoint.updateToSync" : {
-      "path" : "tosync",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ToSyncEndpoint.updateToSync",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "tosyncendpoint.insertToSync" : {
       "path" : "tosync",
       "httpMethod" : "POST",
@@ -54,48 +38,6 @@
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "tosyncendpoint.removeToSync" : {
-      "path" : "tosync/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ToSyncEndpoint.removeToSync",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
-    "tosyncendpoint.getToSync" : {
-      "path" : "tosync/{id}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ToSyncEndpoint.getToSync",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -132,6 +74,64 @@
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tosyncendpoint.getToSync" : {
+      "path" : "tosync/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.ToSyncEndpoint.getToSync",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tosyncendpoint.updateToSync" : {
+      "path" : "tosync",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.ToSyncEndpoint.updateToSync",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tosyncendpoint.removeToSync" : {
+      "path" : "tosync/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.ToSyncEndpoint.removeToSync",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
       }
     }
   },
@@ -183,14 +183,6 @@
       }
     },
     "methods" : {
-      "com.trip.expensemanager.ToSyncEndpoint.updateToSync" : {
-        "request" : {
-          "$ref" : "ToSync"
-        },
-        "response" : {
-          "$ref" : "ToSync"
-        }
-      },
       "com.trip.expensemanager.ToSyncEndpoint.insertToSync" : {
         "request" : {
           "$ref" : "ToSync"
@@ -199,17 +191,25 @@
           "$ref" : "ToSync"
         }
       },
-      "com.trip.expensemanager.ToSyncEndpoint.removeToSync" : {
+      "com.trip.expensemanager.ToSyncEndpoint.listToSync" : {
+        "response" : {
+          "$ref" : "CollectionResponse_ToSync"
+        }
       },
       "com.trip.expensemanager.ToSyncEndpoint.getToSync" : {
         "response" : {
           "$ref" : "ToSync"
         }
       },
-      "com.trip.expensemanager.ToSyncEndpoint.listToSync" : {
+      "com.trip.expensemanager.ToSyncEndpoint.updateToSync" : {
+        "request" : {
+          "$ref" : "ToSync"
+        },
         "response" : {
-          "$ref" : "CollectionResponse_ToSync"
+          "$ref" : "ToSync"
         }
+      },
+      "com.trip.expensemanager.ToSyncEndpoint.removeToSync" : {
       }
     }
   }
