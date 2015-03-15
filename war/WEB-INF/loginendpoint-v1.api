@@ -27,62 +27,22 @@
   "ownerName" : "trip.com",
   "packagePath" : "expensemanager",
   "methods" : {
-    "loginendpoint.listLogIn" : {
-      "path" : "login",
+    "loginendpoint.getLogIn" : {
+      "path" : "login/{id}",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.listLogIn",
+      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.getLogIn",
       "request" : {
         "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "limit" : {
-            "type" : "int32",
-            "required" : false
-          },
-          "username" : {
-            "type" : "string",
-            "required" : false
+          "id" : {
+            "type" : "int64",
+            "required" : true
           }
         },
         "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "loginendpoint.insertLogIn" : {
-      "path" : "login",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.insertLogIn",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "loginendpoint.updateLogIn" : {
-      "path" : "login",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.updateLogIn",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -125,22 +85,62 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "loginendpoint.getLogIn" : {
-      "path" : "login/{id}",
+    "loginendpoint.listLogIn" : {
+      "path" : "login",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.getLogIn",
+      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.listLogIn",
       "request" : {
         "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "limit" : {
+            "type" : "int32",
+            "required" : false
+          },
+          "username" : {
+            "type" : "string",
+            "required" : false
           }
         },
         "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "loginendpoint.updateLogIn" : {
+      "path" : "login",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.updateLogIn",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "loginendpoint.insertLogIn" : {
+      "path" : "login",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.insertLogIn",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -149,21 +149,6 @@
   },
   "descriptor" : {
     "schemas" : {
-      "CollectionResponse_LogIn" : {
-        "id" : "CollectionResponse_LogIn",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "LogIn"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
-      },
       "LogIn" : {
         "id" : "LogIn",
         "type" : "object",
@@ -194,28 +179,30 @@
           },
           "prefferedName" : {
             "type" : "string"
+          },
+          "purchaseId" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CollectionResponse_LogIn" : {
+        "id" : "CollectionResponse_LogIn",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "LogIn"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
           }
         }
       }
     },
     "methods" : {
-      "com.trip.expensemanager.LogInEndpoint.listLogIn" : {
-        "response" : {
-          "$ref" : "CollectionResponse_LogIn"
-        }
-      },
-      "com.trip.expensemanager.LogInEndpoint.insertLogIn" : {
-        "request" : {
-          "$ref" : "LogIn"
-        },
-        "response" : {
-          "$ref" : "LogIn"
-        }
-      },
-      "com.trip.expensemanager.LogInEndpoint.updateLogIn" : {
-        "request" : {
-          "$ref" : "LogIn"
-        },
+      "com.trip.expensemanager.LogInEndpoint.getLogIn" : {
         "response" : {
           "$ref" : "LogIn"
         }
@@ -230,7 +217,23 @@
           "$ref" : "LogIn"
         }
       },
-      "com.trip.expensemanager.LogInEndpoint.getLogIn" : {
+      "com.trip.expensemanager.LogInEndpoint.listLogIn" : {
+        "response" : {
+          "$ref" : "CollectionResponse_LogIn"
+        }
+      },
+      "com.trip.expensemanager.LogInEndpoint.updateLogIn" : {
+        "request" : {
+          "$ref" : "LogIn"
+        },
+        "response" : {
+          "$ref" : "LogIn"
+        }
+      },
+      "com.trip.expensemanager.LogInEndpoint.insertLogIn" : {
+        "request" : {
+          "$ref" : "LogIn"
+        },
         "response" : {
           "$ref" : "LogIn"
         }

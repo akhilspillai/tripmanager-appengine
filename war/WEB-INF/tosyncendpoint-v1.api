@@ -43,39 +43,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "tosyncendpoint.listToSync" : {
-      "path" : "tosync",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ToSyncEndpoint.listToSync",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "limit" : {
-            "type" : "int32",
-            "required" : false
-          },
-          "userId" : {
-            "type" : "int64",
-            "required" : false
-          },
-          "syncType" : {
-            "type" : "string",
-            "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "tosyncendpoint.getToSync" : {
       "path" : "tosync/{id}",
       "httpMethod" : "GET",
@@ -132,6 +99,39 @@
       },
       "response" : {
         "body" : "empty"
+      }
+    },
+    "tosyncendpoint.listToSync" : {
+      "path" : "tosync",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.ToSyncEndpoint.listToSync",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "limit" : {
+            "type" : "int32",
+            "required" : false
+          },
+          "userId" : {
+            "type" : "int64",
+            "required" : false
+          },
+          "syncType" : {
+            "type" : "string",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
       }
     }
   },
@@ -191,11 +191,6 @@
           "$ref" : "ToSync"
         }
       },
-      "com.trip.expensemanager.ToSyncEndpoint.listToSync" : {
-        "response" : {
-          "$ref" : "CollectionResponse_ToSync"
-        }
-      },
       "com.trip.expensemanager.ToSyncEndpoint.getToSync" : {
         "response" : {
           "$ref" : "ToSync"
@@ -210,6 +205,11 @@
         }
       },
       "com.trip.expensemanager.ToSyncEndpoint.removeToSync" : {
+      },
+      "com.trip.expensemanager.ToSyncEndpoint.listToSync" : {
+        "response" : {
+          "$ref" : "CollectionResponse_ToSync"
+        }
       }
     }
   }

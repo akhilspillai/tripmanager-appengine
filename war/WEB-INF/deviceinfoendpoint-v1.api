@@ -77,6 +77,22 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "deviceinfoendpoint.insertDeviceInfo" : {
+      "path" : "deviceinfo",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.DeviceInfoEndpoint.insertDeviceInfo",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "deviceinfoendpoint.removeDeviceInfo" : {
       "path" : "deviceinfo/{id}",
       "httpMethod" : "DELETE",
@@ -96,22 +112,6 @@
       },
       "response" : {
         "body" : "empty"
-      }
-    },
-    "deviceinfoendpoint.insertDeviceInfo" : {
-      "path" : "deviceinfo",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.DeviceInfoEndpoint.insertDeviceInfo",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
       }
     },
     "deviceinfoendpoint.updateDeviceInfo" : {
@@ -176,8 +176,6 @@
           "$ref" : "CollectionResponse_DeviceInfo"
         }
       },
-      "com.trip.expensemanager.DeviceInfoEndpoint.removeDeviceInfo" : {
-      },
       "com.trip.expensemanager.DeviceInfoEndpoint.insertDeviceInfo" : {
         "request" : {
           "$ref" : "DeviceInfo"
@@ -185,6 +183,8 @@
         "response" : {
           "$ref" : "DeviceInfo"
         }
+      },
+      "com.trip.expensemanager.DeviceInfoEndpoint.removeDeviceInfo" : {
       },
       "com.trip.expensemanager.DeviceInfoEndpoint.updateDeviceInfo" : {
         "request" : {

@@ -27,56 +27,6 @@
   "ownerName" : "trip.com",
   "packagePath" : "expensemanager",
   "methods" : {
-    "distributionendpoint.listDistribution" : {
-      "path" : "distribution",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.listDistribution",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "limit" : {
-            "type" : "int32",
-            "required" : false
-          },
-          "tripId" : {
-            "type" : "int64",
-            "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "distributionendpoint.getDistribution" : {
-      "path" : "distribution/{id}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.getDistribution",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "distributionendpoint.insertDistribution" : {
       "path" : "distribution",
       "httpMethod" : "POST",
@@ -129,25 +79,60 @@
       "response" : {
         "body" : "empty"
       }
+    },
+    "distributionendpoint.listDistribution" : {
+      "path" : "distribution",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.listDistribution",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "limit" : {
+            "type" : "int32",
+            "required" : false
+          },
+          "tripId" : {
+            "type" : "int64",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "distributionendpoint.getDistribution" : {
+      "path" : "distribution/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.DistributionEndpoint.getDistribution",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
     }
   },
   "descriptor" : {
     "schemas" : {
-      "CollectionResponse_Distribution" : {
-        "id" : "CollectionResponse_Distribution",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Distribution"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
-      },
       "Distribution" : {
         "id" : "Distribution",
         "type" : "object",
@@ -183,19 +168,24 @@
             "format" : "int64"
           }
         }
+      },
+      "CollectionResponse_Distribution" : {
+        "id" : "CollectionResponse_Distribution",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Distribution"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
       }
     },
     "methods" : {
-      "com.trip.expensemanager.DistributionEndpoint.listDistribution" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Distribution"
-        }
-      },
-      "com.trip.expensemanager.DistributionEndpoint.getDistribution" : {
-        "response" : {
-          "$ref" : "Distribution"
-        }
-      },
       "com.trip.expensemanager.DistributionEndpoint.insertDistribution" : {
         "request" : {
           "$ref" : "Distribution"
@@ -213,6 +203,16 @@
         }
       },
       "com.trip.expensemanager.DistributionEndpoint.removeDistribution" : {
+      },
+      "com.trip.expensemanager.DistributionEndpoint.listDistribution" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Distribution"
+        }
+      },
+      "com.trip.expensemanager.DistributionEndpoint.getDistribution" : {
+        "response" : {
+          "$ref" : "Distribution"
+        }
       }
     }
   }

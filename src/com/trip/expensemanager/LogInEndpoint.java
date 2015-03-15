@@ -7,7 +7,10 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.datanucleus.query.JPACursorHelper;
+import com.google.appengine.labs.repackaged.org.json.JSONArray;
+import com.google.appengine.labs.repackaged.org.json.JSONException;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -165,10 +168,13 @@ public class LogInEndpoint {
 	 *
 	 * @param login the entity to be updated.
 	 * @return The updated entity.
+	 * @throws IOException 
+	 * @throws JSONException 
 	 */
 	@ApiMethod(name = "updateLogIn")
-	public LogIn updateLogIn(LogIn login) {
+	public LogIn updateLogIn(LogIn login) throws IOException, JSONException {
 		EntityManager mgr = getEntityManager();
+		GCMUtil objGCMUtil=new GCMUtil();
 		try {
 			if (!containsLogIn(login)) {
 				throw new EntityNotFoundException("Object does not exist");
@@ -176,6 +182,20 @@ public class LogInEndpoint {
 //			LogIn tempLogin=mgr.find(LogIn.class, login.getId());
 //			tempLogin.setTripIDs(login.getTripIDs());
 //			tempLogin.setRegId(login.getRegId());
+			LogInEndpoint endpoint=new LogInEndpoint();
+			LogIn oldLogin=endpoint.getLogIn(login.getId());
+			if(oldLogin.getPurchaseId()==null && login.getPurchaseId()!=null){
+				DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
+				DeviceInfo devInfo=null;
+				List<Long> devIds=login.getDeviceIDs();
+				JSONArray jsonArr=new JSONArray();
+				for(long devId:devIds){
+					devInfo=devInfoendpoint.getDeviceInfo(devId);
+					objGCMUtil.addToToSync("IP", login.getId(), devId, login.getId());
+					jsonArr.put(devInfo.getGcmRegId());
+				}
+				objGCMUtil.doSendViaGcm(jsonArr);
+			}
 			mgr.persist(login);
 		} finally {
 			mgr.close();

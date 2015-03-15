@@ -27,6 +27,43 @@
   "ownerName" : "trip.com",
   "packagePath" : "expensemanager",
   "methods" : {
+    "expenseendpoint.expenseEndpoint.removeTripExpense" : {
+      "path" : "tripexpense/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.removeTripExpense",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "expenseendpoint.updateExpense" : {
+      "path" : "expense",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.updateExpense",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "expenseendpoint.getExpense" : {
       "path" : "expense/{id}",
       "httpMethod" : "GET",
@@ -43,38 +80,6 @@
           }
         },
         "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "expenseendpoint.insertExpense" : {
-      "path" : "expense",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.insertExpense",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "expenseendpoint.updateExpense" : {
-      "path" : "expense",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.updateExpense",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -101,25 +106,20 @@
         "body" : "empty"
       }
     },
-    "expenseendpoint.expenseEndpoint.removeTripExpense" : {
-      "path" : "tripexpense/{id}",
-      "httpMethod" : "DELETE",
+    "expenseendpoint.insertExpense" : {
+      "path" : "expense",
+      "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.removeTripExpense",
+      "rosyMethod" : "com.trip.expensemanager.ExpenseEndpoint.insertExpense",
       "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
-        "body" : "empty"
+        "body" : "autoTemplate(backendResponse)"
       }
     },
     "expenseendpoint.listExpense" : {
@@ -230,18 +230,7 @@
       }
     },
     "methods" : {
-      "com.trip.expensemanager.ExpenseEndpoint.getExpense" : {
-        "response" : {
-          "$ref" : "Expense"
-        }
-      },
-      "com.trip.expensemanager.ExpenseEndpoint.insertExpense" : {
-        "request" : {
-          "$ref" : "Expense"
-        },
-        "response" : {
-          "$ref" : "Expense"
-        }
+      "com.trip.expensemanager.ExpenseEndpoint.removeTripExpense" : {
       },
       "com.trip.expensemanager.ExpenseEndpoint.updateExpense" : {
         "request" : {
@@ -251,9 +240,20 @@
           "$ref" : "Expense"
         }
       },
+      "com.trip.expensemanager.ExpenseEndpoint.getExpense" : {
+        "response" : {
+          "$ref" : "Expense"
+        }
+      },
       "com.trip.expensemanager.ExpenseEndpoint.removeExpense" : {
       },
-      "com.trip.expensemanager.ExpenseEndpoint.removeTripExpense" : {
+      "com.trip.expensemanager.ExpenseEndpoint.insertExpense" : {
+        "request" : {
+          "$ref" : "Expense"
+        },
+        "response" : {
+          "$ref" : "Expense"
+        }
       },
       "com.trip.expensemanager.ExpenseEndpoint.listExpense" : {
         "response" : {

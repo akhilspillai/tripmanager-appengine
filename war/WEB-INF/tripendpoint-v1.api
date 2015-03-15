@@ -27,6 +27,27 @@
   "ownerName" : "trip.com",
   "packagePath" : "expensemanager",
   "methods" : {
+    "tripendpoint.getTrip" : {
+      "path" : "trip/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.TripEndpoint.getTrip",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "tripendpoint.listTrip" : {
       "path" : "trip",
       "httpMethod" : "GET",
@@ -47,38 +68,6 @@
           }
         },
         "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "tripendpoint.insertTrip" : {
-      "path" : "trip",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.TripEndpoint.insertTrip",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "tripendpoint.updateTrip" : {
-      "path" : "trip",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.TripEndpoint.updateTrip",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -105,22 +94,33 @@
         "body" : "empty"
       }
     },
-    "tripendpoint.getTrip" : {
-      "path" : "trip/{id}",
-      "httpMethod" : "GET",
+    "tripendpoint.updateTrip" : {
+      "path" : "trip",
+      "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.TripEndpoint.getTrip",
+      "rosyMethod" : "com.trip.expensemanager.TripEndpoint.updateTrip",
       "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tripendpoint.insertTrip" : {
+      "path" : "trip",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.TripEndpoint.insertTrip",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -129,21 +129,6 @@
   },
   "descriptor" : {
     "schemas" : {
-      "CollectionResponse_Trip" : {
-        "id" : "CollectionResponse_Trip",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Trip"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
-      },
       "Trip" : {
         "id" : "Trip",
         "type" : "object",
@@ -175,21 +160,35 @@
             "format" : "date-time"
           }
         }
+      },
+      "CollectionResponse_Trip" : {
+        "id" : "CollectionResponse_Trip",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Trip"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
       }
     },
     "methods" : {
+      "com.trip.expensemanager.TripEndpoint.getTrip" : {
+        "response" : {
+          "$ref" : "Trip"
+        }
+      },
       "com.trip.expensemanager.TripEndpoint.listTrip" : {
         "response" : {
           "$ref" : "CollectionResponse_Trip"
         }
       },
-      "com.trip.expensemanager.TripEndpoint.insertTrip" : {
-        "request" : {
-          "$ref" : "Trip"
-        },
-        "response" : {
-          "$ref" : "Trip"
-        }
+      "com.trip.expensemanager.TripEndpoint.removeTrip" : {
       },
       "com.trip.expensemanager.TripEndpoint.updateTrip" : {
         "request" : {
@@ -199,9 +198,10 @@
           "$ref" : "Trip"
         }
       },
-      "com.trip.expensemanager.TripEndpoint.removeTrip" : {
-      },
-      "com.trip.expensemanager.TripEndpoint.getTrip" : {
+      "com.trip.expensemanager.TripEndpoint.insertTrip" : {
+        "request" : {
+          "$ref" : "Trip"
+        },
         "response" : {
           "$ref" : "Trip"
         }
