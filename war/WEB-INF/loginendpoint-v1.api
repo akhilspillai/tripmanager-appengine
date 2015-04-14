@@ -48,43 +48,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "loginendpoint.removeLogIn" : {
-      "path" : "login/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.removeLogIn",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
-    "loginendpoint.logInEndpoint.mergeLogIn" : {
-      "path" : "mergeLogIn",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.mergeLogIn",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "loginendpoint.listLogIn" : {
       "path" : "login",
       "httpMethod" : "GET",
@@ -114,6 +77,22 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "loginendpoint.insertLogIn" : {
+      "path" : "login",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.insertLogIn",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "loginendpoint.updateLogIn" : {
       "path" : "login",
       "httpMethod" : "PUT",
@@ -130,14 +109,35 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "loginendpoint.insertLogIn" : {
-      "path" : "login",
+    "loginendpoint.removeLogIn" : {
+      "path" : "login/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.removeLogIn",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "loginendpoint.logInEndpoint.mergeLogIn" : {
+      "path" : "mergeLogIn",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.insertLogIn",
+      "rosyMethod" : "com.trip.expensemanager.LogInEndpoint.mergeLogIn",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -207,19 +207,17 @@
           "$ref" : "LogIn"
         }
       },
-      "com.trip.expensemanager.LogInEndpoint.removeLogIn" : {
+      "com.trip.expensemanager.LogInEndpoint.listLogIn" : {
+        "response" : {
+          "$ref" : "CollectionResponse_LogIn"
+        }
       },
-      "com.trip.expensemanager.LogInEndpoint.mergeLogIn" : {
+      "com.trip.expensemanager.LogInEndpoint.insertLogIn" : {
         "request" : {
           "$ref" : "LogIn"
         },
         "response" : {
           "$ref" : "LogIn"
-        }
-      },
-      "com.trip.expensemanager.LogInEndpoint.listLogIn" : {
-        "response" : {
-          "$ref" : "CollectionResponse_LogIn"
         }
       },
       "com.trip.expensemanager.LogInEndpoint.updateLogIn" : {
@@ -230,7 +228,9 @@
           "$ref" : "LogIn"
         }
       },
-      "com.trip.expensemanager.LogInEndpoint.insertLogIn" : {
+      "com.trip.expensemanager.LogInEndpoint.removeLogIn" : {
+      },
+      "com.trip.expensemanager.LogInEndpoint.mergeLogIn" : {
         "request" : {
           "$ref" : "LogIn"
         },

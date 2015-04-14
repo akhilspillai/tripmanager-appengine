@@ -42,7 +42,7 @@ public class LogInEndpoint {
 		Query query=null;
 		try {
 			mgr = getEntityManager();
-			
+
 			if(username!=null){
 				query = mgr.createQuery("select from LogIn as LogIn where LogIn.username=:username_fk");
 				query.setParameter("username_fk", username);
@@ -113,54 +113,54 @@ public class LogInEndpoint {
 		return login;
 	}
 
-//	@ApiMethod(name = "createAccount")
-//	public LogIn createAccount(@Named("regId") String regId, @Named("make") String make, @Named("username") String username, @Named("password") String password, @Named("userId") Long userId) {
-//		EntityManager mgr = getEntityManager();
-//		List<Long> deviceIds=null;
-//		DeviceInfoEndpoint devInfoEndpoint=new DeviceInfoEndpoint();
-//		DeviceInfo devInfo=null;
-//		LogIn login=null;
-//		try {
-//			if(userId==0L){
-//				login=new LogIn();
-//				devInfo=new DeviceInfo();
-//				devInfo.setGcmRegId(regId);
-//				devInfo.setMake(make);
-//				devInfo.setUserId(userId);
-//				devInfo=devInfoEndpoint.insertDeviceInfo(devInfo);
-//				deviceIds=new ArrayList<Long>();
-//				deviceIds.add(devInfo.getId());
-//				login.setPassword(password);
-//				login.setUsername(username);
-//				login.setDeviceIDs(deviceIds);
-//			} else{
-//				login=getLogIn(userId);
-//				CollectionResponse<DeviceInfo> infoCollResp = devInfoEndpoint.listDeviceInfo(null, null, login.getId());
-//				Collection<DeviceInfo> devInfos = infoCollResp.getItems();
-//				for(DeviceInfo devInfoTemp:devInfos){
-//					if(devInfoTemp.getGcmRegId().equals(regId)){
-//						devInfo=devInfoTemp;
-//						break;
-//					}
-//				}
-//				if(devInfo==null){
-//					devInfo=new DeviceInfo();
-//					devInfo.setGcmRegId(regId);
-//					devInfo.setMake(make);
-//					devInfo.setUserId(userId);
-//					devInfo=devInfoEndpoint.insertDeviceInfo(devInfo);
-//					deviceIds=login.getDeviceIDs();
-//					deviceIds.add(devInfo.getId());
-//					login.setDeviceIDs(deviceIds);
-//				}
-//			}
-//			mgr.persist(login);
-//		} finally {
-//			mgr.close();
-//		}
-//		return login;
-//	}
-	
+	//	@ApiMethod(name = "createAccount")
+	//	public LogIn createAccount(@Named("regId") String regId, @Named("make") String make, @Named("username") String username, @Named("password") String password, @Named("userId") Long userId) {
+	//		EntityManager mgr = getEntityManager();
+	//		List<Long> deviceIds=null;
+	//		DeviceInfoEndpoint devInfoEndpoint=new DeviceInfoEndpoint();
+	//		DeviceInfo devInfo=null;
+	//		LogIn login=null;
+	//		try {
+	//			if(userId==0L){
+	//				login=new LogIn();
+	//				devInfo=new DeviceInfo();
+	//				devInfo.setGcmRegId(regId);
+	//				devInfo.setMake(make);
+	//				devInfo.setUserId(userId);
+	//				devInfo=devInfoEndpoint.insertDeviceInfo(devInfo);
+	//				deviceIds=new ArrayList<Long>();
+	//				deviceIds.add(devInfo.getId());
+	//				login.setPassword(password);
+	//				login.setUsername(username);
+	//				login.setDeviceIDs(deviceIds);
+	//			} else{
+	//				login=getLogIn(userId);
+	//				CollectionResponse<DeviceInfo> infoCollResp = devInfoEndpoint.listDeviceInfo(null, null, login.getId());
+	//				Collection<DeviceInfo> devInfos = infoCollResp.getItems();
+	//				for(DeviceInfo devInfoTemp:devInfos){
+	//					if(devInfoTemp.getGcmRegId().equals(regId)){
+	//						devInfo=devInfoTemp;
+	//						break;
+	//					}
+	//				}
+	//				if(devInfo==null){
+	//					devInfo=new DeviceInfo();
+	//					devInfo.setGcmRegId(regId);
+	//					devInfo.setMake(make);
+	//					devInfo.setUserId(userId);
+	//					devInfo=devInfoEndpoint.insertDeviceInfo(devInfo);
+	//					deviceIds=login.getDeviceIDs();
+	//					deviceIds.add(devInfo.getId());
+	//					login.setDeviceIDs(deviceIds);
+	//				}
+	//			}
+	//			mgr.persist(login);
+	//		} finally {
+	//			mgr.close();
+	//		}
+	//		return login;
+	//	}
+
 	/**
 	 * This method is used for updating an existing entity. If the entity does not
 	 * exist in the datastore, an exception is thrown.
@@ -179,24 +179,40 @@ public class LogInEndpoint {
 			if (!containsLogIn(login)) {
 				throw new EntityNotFoundException("Object does not exist");
 			}
-//			LogIn tempLogin=mgr.find(LogIn.class, login.getId());
-//			tempLogin.setTripIDs(login.getTripIDs());
-//			tempLogin.setRegId(login.getRegId());
+			//			LogIn tempLogin=mgr.find(LogIn.class, login.getId());
+			//			tempLogin.setTripIDs(login.getTripIDs());
+			//			tempLogin.setRegId(login.getRegId());
 			LogInEndpoint endpoint=new LogInEndpoint();
 			LogIn oldLogin=endpoint.getLogIn(login.getId());
-			if(oldLogin.getPurchaseId()==null && login.getPurchaseId()!=null){
+			List<Long> oldDevIds=oldLogin.getDeviceIDs();
+			List<Long> newDevIds=login.getDeviceIDs();
+			if(newDevIds.containsAll(oldDevIds)){
+				if(oldLogin.getPurchaseId()==null && login.getPurchaseId()!=null){
+					DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
+					DeviceInfo devInfo=null;
+					List<Long> devIds=login.getDeviceIDs();
+					JSONArray jsonArr=new JSONArray();
+					for(long devId:devIds){
+						devInfo=devInfoendpoint.getDeviceInfo(devId);
+						objGCMUtil.addToToSync("IP", login.getId(), devId, login.getId());
+						jsonArr.put(devInfo.getGcmRegId());
+					}
+					objGCMUtil.doSendViaGcm(jsonArr);
+				}
+			} else{
+				JSONArray jsonArr=new JSONArray();
 				DeviceInfoEndpoint devInfoendpoint=new DeviceInfoEndpoint();
 				DeviceInfo devInfo=null;
-				List<Long> devIds=login.getDeviceIDs();
-				JSONArray jsonArr=new JSONArray();
-				for(long devId:devIds){
-					devInfo=devInfoendpoint.getDeviceInfo(devId);
-					objGCMUtil.addToToSync("IP", login.getId(), devId, login.getId());
-					jsonArr.put(devInfo.getGcmRegId());
+				for(long devId:oldDevIds){
+					if(!newDevIds.contains(devId)){
+						devInfo=devInfoendpoint.getDeviceInfo(devId);
+						objGCMUtil.addToToSync("LO", login.getId(), devId, login.getId());
+						jsonArr.put(devInfo.getGcmRegId());
+					}
 				}
 				objGCMUtil.doSendViaGcm(jsonArr);
 			}
-			mgr.persist(login);
+			mgr.merge(login);
 		} finally {
 			mgr.close();
 		}
@@ -244,9 +260,6 @@ public class LogInEndpoint {
 			if (!containsLogIn(login)) {
 				throw new EntityNotFoundException("Object does not exist");
 			}
-//			LogIn tempLogin=mgr.find(LogIn.class, login.getId());
-//			tempLogin.setTripIDs(login.getTripIDs());
-//			tempLogin.setRegId(login.getRegId());
 			mgr.merge(login);
 		} finally {
 			mgr.close();
